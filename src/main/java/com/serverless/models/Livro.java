@@ -58,6 +58,4 @@ public class Livro {
     public void setGenero(Genero genero) {
         this.genero = genero;
     }
-
-
 }
