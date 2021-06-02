@@ -37,11 +37,17 @@ package:
 
 functions:
   gravar-genero:
-    handler: com.serverless.functions.GravarGenero
+    handler: com.serverless.functions.genero.GravarGenero
     events:
       - httpApi:
           path: /genero
           method: post
+  obter-genero:
+    handler: com.serverless.functions.genero.ObterGenero
+    events:
+      - httpApi:
+          path: /genero
+          method: get
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
 #    Check the event documentation for details
