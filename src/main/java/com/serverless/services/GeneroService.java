@@ -17,7 +17,7 @@ public class GeneroService {
     }
 
     public void gerarMapper() {
-        if (this.dynamoDBConfiguration != null) {
+        if (this.dynamoDBConfiguration == null) {
             this.dynamoDBConfiguration = new DynamoDBConfiguration();
             this.dynamoDBConfiguration.build();
             this.dynamoDBConfiguration.buildDynamoDBMapper();
