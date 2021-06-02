@@ -33,7 +33,7 @@ provider:
 
 # you can add packaging information here
 package:
-  artifact: target/livro-graphql-lambda.jar
+  artifact: target/livro-graphql-lambda-dev.jar
 
 functions:
   gravar-genero:
