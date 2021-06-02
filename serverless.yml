@@ -36,8 +36,12 @@ package:
   artifact: target/livro-graphql-lambda.jar
 
 functions:
-  index:
-    handler: com.serverless.Handler
+  gravar-genero:
+    handler: com.serverless.functions.GravarGenero
+      events:
+        - httpApi:
+            path: /genero
+            method: post
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
 #    Check the event documentation for details
