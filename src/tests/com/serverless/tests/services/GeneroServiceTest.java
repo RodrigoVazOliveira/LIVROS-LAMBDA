@@ -43,4 +43,12 @@ public class GeneroServiceTest {
         this.generoService.cadastrarNovoGeneroDeLivro("comedia");
         verify(dynamoDBMapper).save(any());
     }
+
+
+    @Test
+    public void testarObterTodosGeneros() {
+        lenient().when(this.dynamoDBMapper.scan(eq(Genero.class), any(DynamoDBScanExpression.class))).thenReturn(this.mockListaDeGenero);
+        List<Genero> generos = (List<Genero>) generoService.obterTodosGeneros();
+        Assert.assertEquals(this.mockListaDeGenero.size(), generos.size());
+    }
 }
