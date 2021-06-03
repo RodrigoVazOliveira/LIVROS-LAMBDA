@@ -7,6 +7,7 @@ import com.serverless.models.Genero;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class GeneroService {
 
@@ -32,8 +33,6 @@ public class GeneroService {
 
     public Iterable<Genero> obterTodosGeneros() {
         gerarMapper();
-        List<Genero> generos = new ArrayList<>();
-        generos.addAll(this.dynamoDBMapper.scan(Genero.class, new DynamoDBScanExpression()));
-        return generos;
+        return this.dynamoDBMapper.scan(Genero.class, new DynamoDBScanExpression()).stream().collect(Collectors.toList());
     }
 }

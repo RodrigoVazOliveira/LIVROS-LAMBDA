@@ -1,36 +1,54 @@
 package com.serverless.tests.services;
 
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
+import com.amazonaws.services.dynamodbv2.datamodeling.*;
+import com.serverless.configurations.DynamoDBConfiguration;
 import com.serverless.models.Genero;
 import com.serverless.services.GeneroService;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.Assert;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@RunWith(MockitoJUnitRunner.class)
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.mockito.Mockito.*;
+
+@ExtendWith(MockitoExtension.class)
 public class GeneroServiceTest {
-
-    private GeneroService generoService;
 
     @Mock
     private DynamoDBMapper dynamoDBMapper;
 
-    @Before
+    @Mock
+    private DynamoDBConfiguration dynamoDBConfiguration;
+
+    @Mock
+    private PaginatedScanList<Genero> mockListaDeGenero;
+
+    @InjectMocks
+    private GeneroService generoService;
+
+    @BeforeEach
     public void setup() {
-        this.generoService = new GeneroService();
-        MockitoAnnotations.openMocks(this);
+        lenient().when(dynamoDBConfiguration.getDynamoDBMapper()).thenReturn(dynamoDBMapper);
     }
 
     @Test
-    public void gravarNovoGeneroTest() {
-        Mockito.doNothing().when(dynamoDBMapper).save(Mockito.any());
+    public void testCadastrarNovoGenero() {
+        lenient().doNothing().when(this.dynamoDBMapper).save(any());
+        this.generoService.cadastrarNovoGeneroDeLivro("comedia");
+        verify(dynamoDBMapper).save(any());
+    }
 
-        this.generoService.cadastrarNovoGeneroDeLivro("Comédia");
 
-        Mockito.verify(dynamoDBMapper).save(Mockito.any());
+    @Test
+    public void testarObterTodosGeneros() {
+        lenient().when(this.dynamoDBMapper.scan(eq(Genero.class), any(DynamoDBScanExpression.class))).thenReturn(this.mockListaDeGenero);
+        List<Genero> generos = (List<Genero>) generoService.obterTodosGeneros();
+        Assert.assertEquals(this.mockListaDeGenero.size(), generos.size());
     }
 }

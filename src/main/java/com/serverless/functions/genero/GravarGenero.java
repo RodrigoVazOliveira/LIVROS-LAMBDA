@@ -16,11 +16,18 @@ public class GravarGenero implements RequestHandler<Map<String, Object>, ApiGate
     private GeneroService generoService;
     private static final Logger LOG = LogManager.getLogger(GravarGenero.class);
 
+    public GravarGenero() {
+        this.generoService = new GeneroService();
+    }
+
+    public GravarGenero(GeneroService generoService) {
+        this.generoService = generoService;
+    }
+
     @Override
     public ApiGatewayResponse handleRequest(Map<String, Object> stringObjectMap, Context context) {
         LOG.info("Gravando o novo genero no dynamoDB");
 
-        this.generoService = new GeneroService();
         this.generoService.cadastrarNovoGeneroDeLivro(stringObjectMap.get("nome").toString());
 
         LOG.info("Gravação efetuada com sucesso!");
