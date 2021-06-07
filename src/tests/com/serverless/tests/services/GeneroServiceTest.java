@@ -13,7 +13,10 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.mockito.Mockito.*;
 
@@ -29,12 +32,22 @@ public class GeneroServiceTest {
     @Mock
     private PaginatedScanList<Genero> mockListaDeGenero;
 
+    @Mock
+    private PaginatedQueryList<Genero> mockListBuscaPorId;
+
+    @Mock
+    private List<Genero> mockListRetornoBuscaPorId;
+
     @InjectMocks
     private GeneroService generoService;
+
+    private Genero testeGenero;
 
     @BeforeEach
     public void setup() {
         lenient().when(dynamoDBConfiguration.getDynamoDBMapper()).thenReturn(dynamoDBMapper);
+        this.testeGenero = new Genero();
+        this.testeGenero.setNome("Nome 1");
     }
 
     @Test
@@ -54,12 +67,13 @@ public class GeneroServiceTest {
     @Test
     public void testarAtualizacaoDeGenero() {
         lenient().doNothing().when(dynamoDBMapper).save(Mockito.any());
+        List<Genero> listaResultadoGenero = new ArrayList<>();
+        listaResultadoGenero.add(this.testeGenero);
+        lenient().when(this.mockListBuscaPorId.stream()).thenReturn(Stream.of(listaResultadoGenero.toArray(new Genero[0])));
+        lenient().when(this.dynamoDBMapper.query(eq(Genero.class), any(DynamoDBQueryExpression.class))).thenReturn(this.mockListBuscaPorId);
 
-        Genero generoAtualizar = new Genero();
-        generoAtualizar.setId("idtest");
-        generoAtualizar.setNome("Novo nome");
-
-        this.generoService.atualizarGenero(generoAtualizar);
-        verify(dynamoDBMapper).save(Mockito.any());
+        this.testeGenero.setId("IdTEst");
+        this.generoService.atualizarGenero(this.testeGenero);
+        verify(dynamoDBMapper).save(any());
     }
 }
