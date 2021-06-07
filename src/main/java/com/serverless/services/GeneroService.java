@@ -49,9 +49,9 @@ public class GeneroService {
         query.withConditionalOperator("Id = :valorUm");
         query.withExpressionAttributeValues(valorABuscar);
 
-        List<Genero> resultado = this.dynamoDBMapper.query(Genero.class, query);
+        List<Genero> resultado = this.dynamoDBMapper.query(Genero.class, query).stream().collect(Collectors.toList());
 
-        if (resultado.size() == 0 || resultado == null) {
+        if (resultado == null) {
             throw new RuntimeException("Não foi localziado nenhum genero com id " + id);
         }
 
