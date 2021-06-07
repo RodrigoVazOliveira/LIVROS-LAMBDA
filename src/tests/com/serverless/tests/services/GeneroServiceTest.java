@@ -10,9 +10,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.Mockito.*;
@@ -44,11 +44,22 @@ public class GeneroServiceTest {
         verify(dynamoDBMapper).save(any());
     }
 
-
     @Test
     public void testarObterTodosGeneros() {
         lenient().when(this.dynamoDBMapper.scan(eq(Genero.class), any(DynamoDBScanExpression.class))).thenReturn(this.mockListaDeGenero);
         List<Genero> generos = (List<Genero>) generoService.obterTodosGeneros();
         Assert.assertEquals(this.mockListaDeGenero.size(), generos.size());
+    }
+
+    @Test
+    public void testarAtualizacaoDeGenero() {
+        lenient().doNothing().when(dynamoDBMapper).save(Mockito.any());
+
+        Genero generoAtualizar = new Genero();
+        generoAtualizar.setId("idtest");
+        generoAtualizar.setNome("Novo nome");
+
+        this.generoService.atualizarGenero(generoAtualizar);
+        verify(dynamoDBMapper).save(Mockito.any());
     }
 }
