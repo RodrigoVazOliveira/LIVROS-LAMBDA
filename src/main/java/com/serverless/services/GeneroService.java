@@ -51,7 +51,7 @@ public class GeneroService {
 
         List<Genero> resultado = this.dynamoDBMapper.query(Genero.class, query).stream().collect(Collectors.toList());
 
-        if (resultado == null) {
+        if (resultado == null || resultado.size() == 0) {
             throw new RuntimeException("Não foi localziado nenhum genero com id " + id);
         }
 
