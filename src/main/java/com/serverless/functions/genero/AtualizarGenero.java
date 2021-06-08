@@ -29,4 +29,24 @@ public class AtualizarGenero implements RequestHandler<Map<String, Object>, ApiG
 
         return verificarResposta(stringObjectMap);
     }
+
+
+    public ApiGatewayResponse verificarResposta(Map<String, Object> input) {
+        LOG.info("Gerando resposta");
+        try {
+            this.generoService.atualizarGenero(this.genero);
+            return ApiGatewayResponse.builder()
+                    .setStatusCode(201)
+                    .setHeaders(Collections.singletonMap("X-Powered-By", "AWS Lambda & serverless"))
+                    .setObjectBody(new Response("Genero com id " +
+                            this.genero.getId() + " atualizado com sucesso!", input))
+                    .build();
+        } catch (RuntimeException e) {
+            return ApiGatewayResponse.builder()
+                    .setStatusCode(400)
+                    .setHeaders(Collections.singletonMap("X-Powered-By", "AWS Lambda & serverless"))
+                    .setObjectBody(new Response(e.getMessage(), input))
+                    .build();
+        }
+    }
 }
