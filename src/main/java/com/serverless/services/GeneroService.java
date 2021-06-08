@@ -62,6 +62,6 @@ public class GeneroService {
         Genero genero = this.buscarGeneroPorId(generoAtualizar.getId());
         genero.setNome(generoAtualizar.getNome());
 
-        this.dynamoDBMapper.save(geneo);
+        this.dynamoDBMapper.save(genero);
     }
 }
