@@ -7,7 +7,6 @@ import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.serverless.configurations.DynamoDBConfiguration;
 import com.serverless.models.Genero;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -63,6 +62,6 @@ public class GeneroService {
         Genero genero = this.buscarGeneroPorId(generoAtualizar.getId());
         genero.setNome(generoAtualizar.getNome());
 
-        this.dynamoDBMapper.save(genero);
+        this.dynamoDBMapper.save(geneo);
     }
 }
