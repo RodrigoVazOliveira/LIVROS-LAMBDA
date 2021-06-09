@@ -60,5 +60,25 @@ public class AtualizarGeneroTest {
         Assert.assertEquals(responseEsperada.getHeaders(), respostaTest.getHeaders());
     }
 
+    @Test
+    public void testarAtualizacaoDeGeneroComError() {
+        Mockito.doThrow(new RuntimeException("Não foi localziado nenhum genero com id 2"))
+                .when(this.generoService).atualizarGenero(Mockito.any());
 
+        Map<String, Object> input = new HashMap<>();
+        input.put("Id", "2");
+        input.put("nome", "Ficção cientifica");
+
+        ApiGatewayResponse responseEsperada =  ApiGatewayResponse.builder()
+                .setStatusCode(400)
+                .setHeaders(Collections.singletonMap("X-Powered-By", "AWS Lambda & serverless"))
+                .setObjectBody(new Response("Não foi localziado nenhum genero com id 2", input))
+                .build();
+
+        ApiGatewayResponse respostaTest = this.atualizarGenero.handleRequest(input, this.context);
+
+        Assert.assertEquals(responseEsperada.getStatusCode(), respostaTest.getStatusCode());
+        Assert.assertEquals(responseEsperada.getBody(), respostaTest.getBody());
+        Assert.assertEquals(responseEsperada.getHeaders(), respostaTest.getHeaders());
+    }
 }
