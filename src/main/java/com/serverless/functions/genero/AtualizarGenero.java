@@ -14,9 +14,17 @@ import java.util.Map;
 
 public class AtualizarGenero implements RequestHandler<Map<String, Object>, ApiGatewayResponse> {
 
-    private final GeneroService generoService = new GeneroService();
+    private GeneroService generoService;
     private final Genero genero = new Genero();
     private static final Logger LOG = LogManager.getLogger(AtualizarGenero.class);
+
+    public AtualizarGenero() {
+        this.generoService = new GeneroService();
+    }
+
+    public AtualizarGenero(GeneroService generoService) {
+        this.generoService = generoService;
+    }
 
     @Override
     public ApiGatewayResponse handleRequest(Map<String, Object> stringObjectMap, Context context) {
