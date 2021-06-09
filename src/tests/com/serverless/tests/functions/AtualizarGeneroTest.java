@@ -34,11 +34,6 @@ public class AtualizarGeneroTest {
     @InjectMocks
     private AtualizarGenero atualizarGenero;
 
-    @BeforeEach
-    public void setup() {
-        this.atualizarGenero = new AtualizarGenero(this.generoService);
-    }
-
     @Test
     public void testarAtualizacaoDeGeneroComSucesso() {
         Mockito.lenient().doNothing().when(this.generoService).atualizarGenero(Mockito.any());

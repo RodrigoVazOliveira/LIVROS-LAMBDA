@@ -17,13 +17,21 @@ import java.util.Map;
 public class ObterGenero implements RequestHandler<Map<String, Object>, ApiGatewayResponse> {
 
     private static final Logger LOG = LogManager.getLogger(ObterGenero.class);
+    private GeneroService generoService;
+
+    public ObterGenero() {
+        this.generoService = new GeneroService();
+    }
+
+    public ObterGenero(GeneroService generoService) {
+        this.generoService = generoService;
+    }
 
     @Override
     public ApiGatewayResponse handleRequest(Map<String, Object> stringObjectMap, Context context) {
         LOG.info("Iniciar processo para gerar lista de generos!");
 
-        GeneroService generoService = new GeneroService();
-        String generos = converterListaDeGeneroParaJson(generoService.obterTodosGeneros());
+        String generos = converterListaDeGeneroParaJson(this.generoService.obterTodosGeneros());
 
         LOG.info("Gerado lista de generos!");
 
@@ -44,11 +52,10 @@ public class ObterGenero implements RequestHandler<Map<String, Object>, ApiGatew
     }
 
     private ApiGatewayResponse criarResposta(String mensagem, Map<String, Object> stringObjectMap) {
-        Response response = new Response(mensagem, stringObjectMap);
         return ApiGatewayResponse.builder()
                 .setStatusCode(200)
                 .setHeaders(Collections.singletonMap("X-Powered-By", "AWS Lambda & serverless"))
-                .setObjectBody(response)
+                .setObjectBody(new Response(mensagem, stringObjectMap))
                 .build();
     }
 }

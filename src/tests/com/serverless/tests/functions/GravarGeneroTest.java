@@ -34,11 +34,6 @@ public class GravarGeneroTest {
     @InjectMocks
     private GravarGenero gravarGenero;
 
-    @BeforeEach
-    public void setup() {
-        this.gravarGenero = new GravarGenero(generoService);
-    }
-
     @Test
     public void testHandlerRequest() {
         Mockito.doNothing().when(generoService).cadastrarNovoGeneroDeLivro(Mockito.anyString());
