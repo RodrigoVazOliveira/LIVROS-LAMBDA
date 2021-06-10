@@ -40,12 +40,12 @@ public class CadastrarTipoDeLivroTest {
         this.input.put("nome", "bolso");
 
         TipoDeLivro tipoDeLivro = new TipoDeLivro();
-        tipoDeLivro.setId("1");
+
         tipoDeLivro.setNome("bolso");
 
         ApiGatewayResponse respostaEsperada = ApiGatewayResponse.builder()
                 .setHeaders(Collections.singletonMap("X-Powered-By", "AWS Lambda & serverless"))
-                .setObjectBody(new Response("o tipo de livro " + tipoDeLivro + " foi gravado com sucesso!", input))
+                .setObjectBody(new Response("O tipo de livro " + tipoDeLivro + " foi gravado com sucesso!", input))
                 .setStatusCode(201)
                 .build();
 
