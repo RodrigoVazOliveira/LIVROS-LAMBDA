@@ -88,4 +88,27 @@ public class GeneroServiceTest {
 
         Assert.assertEquals(ex.getMessage(), "Não foi localziado nenhum genero com id IdTEst");
     }
+
+    @Test
+    public void testarDeletarGeneroPorIdComSucesso() {
+        List<Genero> listaResultadoGenero = new ArrayList<>();
+        listaResultadoGenero.add(this.testeGenero);
+        lenient().when(this.mockListBuscaPorId.stream()).thenReturn(Stream.of(listaResultadoGenero.toArray(new Genero[0])));
+        lenient().when(this.dynamoDBMapper.query(eq(Genero.class), any(DynamoDBQueryExpression.class))).thenReturn(this.mockListBuscaPorId);
+        lenient().doNothing().when(this.dynamoDBMapper).delete(any());
+        this.generoService.deletarGenero("id");
+        verify(this.dynamoDBMapper).delete(any());
+    }
+
+    @Test
+    public void testarDeletarGeneroPorIdComErro() {
+
+        RuntimeException respostaEsperada = new RuntimeException("Não foi localziado nenhum genero com id 2");
+        doThrow(respostaEsperada)
+                .when(this.dynamoDBMapper).query(eq(Genero.class), any(DynamoDBQueryExpression.class));
+        RuntimeException respostaTest = Assertions.assertThrows(RuntimeException.class, () -> {
+            this.generoService.deletarGenero("2");
+        });
+        Assert.assertEquals(respostaTest, respostaEsperada);
+    }
 }
