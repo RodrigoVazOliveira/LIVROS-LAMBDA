@@ -88,4 +88,15 @@ public class GeneroServiceTest {
 
         Assert.assertEquals(ex.getMessage(), "Não foi localziado nenhum genero com id IdTEst");
     }
+
+    @Test
+    public void testarDeletarGeneroPorId() {
+        List<Genero> listaResultadoGenero = new ArrayList<>();
+        listaResultadoGenero.add(this.testeGenero);
+        lenient().when(this.mockListBuscaPorId.stream()).thenReturn(Stream.of(listaResultadoGenero.toArray(new Genero[0])));
+        lenient().when(this.dynamoDBMapper.query(eq(Genero.class), any(DynamoDBQueryExpression.class))).thenReturn(this.mockListBuscaPorId);
+        lenient().doNothing().when(this.dynamoDBMapper).delete(any());
+        this.generoService.deletarGenero("id");
+        verify(this.dynamoDBMapper).delete(any());
+    }
 }

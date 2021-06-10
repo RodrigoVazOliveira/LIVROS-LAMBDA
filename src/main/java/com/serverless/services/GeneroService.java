@@ -44,7 +44,6 @@ public class GeneroService {
         gerarMapper();
         Map<String, AttributeValue> valorABuscar = new HashMap<>();
         valorABuscar.put("valorUm", new AttributeValue().withS(id));
-        valorABuscar.put("safd", new AttributeValue().withM())
 
         DynamoDBQueryExpression<Genero> query = new DynamoDBQueryExpression<>();
         query.withConditionalOperator("Id = :valorUm");
@@ -65,9 +64,6 @@ public class GeneroService {
         genero.setNome(generoAtualizar.getNome());
 
         this.dynamoDBMapper.save(genero);
-
-        LocalDateTime da;
-        da.compareTo()
     }
 
     public void deletarGenero(String id) {
