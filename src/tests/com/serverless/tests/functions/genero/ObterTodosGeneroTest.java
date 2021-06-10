@@ -1,4 +1,4 @@
-package com.serverless.tests.functions;
+package com.serverless.tests.functions.genero;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.fasterxml.jackson.core.JsonProcessingException;

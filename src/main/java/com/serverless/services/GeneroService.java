@@ -29,7 +29,7 @@ public class GeneroService {
         this.dynamoDBMapper.save(genero);
     }
 
-    public void gerarMapper() {
+    private void gerarMapper() {
         LOG.info("Gerando o mapper com as configurações do ambiente");
         if (this.dynamoDBConfiguration == null) {
             this.dynamoDBConfiguration = new DynamoDBConfiguration();
