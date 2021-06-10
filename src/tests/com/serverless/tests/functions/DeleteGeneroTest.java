@@ -1,6 +1,5 @@
 package com.serverless.tests.functions;
 
-import com.amazonaws.services.apigatewayv2.model.Api;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.serverless.ApiGatewayResponse;
 import com.serverless.Response;

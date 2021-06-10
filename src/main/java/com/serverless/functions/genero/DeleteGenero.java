@@ -1,6 +1,5 @@
 package com.serverless.functions.genero;
 
-import com.amazonaws.services.dynamodbv2.model.Delete;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.serverless.ApiGatewayResponse;

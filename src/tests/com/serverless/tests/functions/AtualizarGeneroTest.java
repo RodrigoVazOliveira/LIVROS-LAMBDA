@@ -7,7 +7,6 @@ import com.serverless.functions.genero.AtualizarGenero;
 import com.serverless.services.GeneroService;
 import org.apache.logging.log4j.Logger;
 import org.junit.Assert;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
