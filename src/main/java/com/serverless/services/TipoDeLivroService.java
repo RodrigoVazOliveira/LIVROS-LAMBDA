@@ -13,6 +13,8 @@ public class TipoDeLivroService {
     private static final Logger LOG = LogManager.getLogger(GeneroService.class);
 
     public void cadastrarNovoTipoDeLivro(TipoDeLivro tipoDeLivro) {
+        gerarMapper();
+        this.dynamoDBMapper.save(tipoDeLivro);
     }
 
     private void gerarMapper() {

@@ -4,6 +4,7 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.serverless.ApiGatewayResponse;
 import com.serverless.Response;
 import com.serverless.models.TipoDeLivro;
+import com.serverless.services.TipoDeLivroService;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
