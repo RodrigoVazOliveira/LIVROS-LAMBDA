@@ -49,4 +49,25 @@ public class DeleteGeneroTest {
         Assert.assertEquals(respostaEsperada.getBody(), respostaTest.getBody());
         Assert.assertEquals(respostaEsperada.getHeaders(), respostaTest.getHeaders());
     }
+
+    @Test
+    public void testarDeleteGeneroComErro() {
+        doThrow(new RuntimeException("Não foi localziado nenhum genero com id 1"))
+                .when(this.generoService).deletarGenero(anyString());
+
+        Map<String, Object> input = new HashMap<>();
+        input.put("id", "1");
+
+        ApiGatewayResponse respostaEsperada = ApiGatewayResponse.builder()
+                .setHeaders(Collections.singletonMap("X-Powered-By", "AWS Lambda & serverless"))
+                .setObjectBody(new Response("Não foi localziado nenhum genero com id 1", input))
+                .setStatusCode(400)
+                .build();
+
+        ApiGatewayResponse respostaTest = this.deleteGenero.handleRequest(input, this.context);
+
+        Assert.assertEquals(respostaEsperada.getStatusCode(), respostaTest.getStatusCode());
+        Assert.assertEquals(respostaEsperada.getBody(), respostaTest.getBody());
+        Assert.assertEquals(respostaEsperada.getHeaders(), respostaTest.getHeaders());
+    }
 }
