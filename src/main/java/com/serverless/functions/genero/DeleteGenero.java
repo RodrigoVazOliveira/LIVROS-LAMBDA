@@ -17,6 +17,7 @@ public class DeleteGenero implements RequestHandler<Map<String, Object>, ApiGate
     private static final Logger LOG = LogManager.getLogger(DeleteGenero.class);
 
     public DeleteGenero() {
+        this.generoService = new GeneroService();
     }
 
     public DeleteGenero(GeneroService generoService) {
