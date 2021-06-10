@@ -32,7 +32,7 @@ public class DeleteGenero implements RequestHandler<Map<String, Object>, ApiGate
             this.generoService.deletarGenero(stringObjectMap.get("id").toString());
             return ApiGatewayResponse.builder()
                     .setHeaders(Collections.singletonMap("X-Powered-By", "AWS Lambda & serverless"))
-                    .setObjectBody(new Response("O genero com id " + stringObjectMap.get("id") + "foi excluido!", stringObjectMap))
+                    .setObjectBody(new Response("O genero com id " + stringObjectMap.get("id") + " foi excluido!", stringObjectMap))
                     .setStatusCode(204)
                     .build();
         } catch (RuntimeException e) {
