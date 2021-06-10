@@ -7,6 +7,7 @@ import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.serverless.configurations.DynamoDBConfiguration;
 import com.serverless.models.Genero;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,6 +44,7 @@ public class GeneroService {
         gerarMapper();
         Map<String, AttributeValue> valorABuscar = new HashMap<>();
         valorABuscar.put("valorUm", new AttributeValue().withS(id));
+        valorABuscar.put("safd", new AttributeValue().withM())
 
         DynamoDBQueryExpression<Genero> query = new DynamoDBQueryExpression<>();
         query.withConditionalOperator("Id = :valorUm");
@@ -63,5 +65,14 @@ public class GeneroService {
         genero.setNome(generoAtualizar.getNome());
 
         this.dynamoDBMapper.save(genero);
+
+        LocalDateTime da;
+        da.compareTo()
+    }
+
+    public void deletarGenero(String id) {
+        gerarMapper();
+        Genero genero = this.buscarGeneroPorId(id);
+        this.dynamoDBMapper.delete(genero);
     }
 }
