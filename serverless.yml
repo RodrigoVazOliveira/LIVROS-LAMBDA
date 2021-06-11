@@ -40,20 +40,44 @@ functions:
     handler: com.serverless.functions.genero.GravarGenero
     events:
       - httpApi:
-          path: /genero
+          path: /generos/
           method: post
   obter-genero:
     handler: com.serverless.functions.genero.ObterGenero
     events:
       - httpApi:
-          path: /genero
+          path: /generos/
           method: get
   atualizar-genero:
     handler: com.serverless.functions.genero.AtualizarGenero
     events:
       - httpApi:
-          path: /genero
+          path: /generos/
           method: put
+  delete-genero:
+    handler: com.serverless.functions.genero.DeleteGenero
+    events:
+      - httpApi:
+          path: /generos/
+          method: delete
+  cadastrar-tipo-de-livro:
+    handler: com.serverless.functions.tipodelivro.CadastrarTipoDeLivro
+    events:
+      - httpApi:
+          path: /tipodelivros/
+          method: post
+  atualizar-tipo-de-livro:
+    handler: com.serverless.functions.tipodelivro.AtualizarTipoDeLivro
+    events:
+      - httpApi:
+          path: /tipodelivros/
+          method: put
+  obter-todos-tipo-de-livro:
+    handler: com.serverless.functions.tipodelivro.ObterTodosTipoDeLivro
+    events:
+      - httpApi:
+          path: /tipodelivros/
+          method: get
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
 #    Check the event documentation for details
