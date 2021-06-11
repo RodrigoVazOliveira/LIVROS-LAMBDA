@@ -32,7 +32,7 @@ public class ObterTodosTipoDeLivroTest {
     private Context context;
 
     @InjectMocks
-    private ObterTodosTipoDeLivro obterTodosTipoDeLivro;
+    private ObterTodosTipoDeLivro        obterTodosTipoDeLivro;
 
     @Mock
     private Iterable<TipoDeLivro> tipoDeLivros;
