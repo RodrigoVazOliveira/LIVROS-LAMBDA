@@ -30,6 +30,8 @@ public class TipoDeLivroServiceTest {
 
     private PaginatedQueryList<TipoDeLivro> tipoDeLivros;
 
+    private PaginatedQueryList<TipoDeLivro> tipoDeLivrosError;
+
     private Iterable<TipoDeLivro> tipoDeLivrosTest;
 
     private TipoDeLivro tipoDeLivro;
@@ -48,7 +50,9 @@ public class TipoDeLivroServiceTest {
         this.tipoDeLivros = mock(PaginatedQueryList.class,
                 withSettings().defaultAnswer(new ForwardsInvocations(listaTipoDeLivros)));
 
-
+        List<TipoDeLivro> listaComError = new ArrayList<>();
+        this.tipoDeLivrosError = mock(PaginatedQueryList.class,
+                withSettings().defaultAnswer(new ForwardsInvocations(listaComError)));
     }
 
     @Test
@@ -75,5 +79,15 @@ public class TipoDeLivroServiceTest {
         doNothing().when(this.dynamoDBMapper).save(this.tipoDeLivro);
        this.tipoDeLivroService.atualizarTipoDeLivro(this.tipoDeLivro);
        verify(this.dynamoDBMapper).save(any());
+    }
+
+    @Test
+    public void testarAtualizarTipoDeLivroComErro() {
+        when(this.dynamoDBMapper.query(eq(TipoDeLivro.class), any(DynamoDBQueryExpression.class)))
+                .thenReturn(this.tipoDeLivrosError);
+        RuntimeException resposta = Assertions.assertThrows(RuntimeException.class, () -> {
+            this.tipoDeLivroService.atualizarTipoDeLivro(this.tipoDeLivro);
+        });
+        Assertions.assertEquals("não existe um tipo de livro com id 1", resposta.getMessage());
     }
 }
