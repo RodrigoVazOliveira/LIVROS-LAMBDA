@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.serverless.ApiGatewayResponse;
 import com.serverless.Response;
+import com.serverless.functions.tipodelivro.ObterTodosTipoDeLivro;
 import com.serverless.models.TipoDeLivro;
 import com.serverless.services.TipoDeLivroService;
 import org.junit.Assert;
