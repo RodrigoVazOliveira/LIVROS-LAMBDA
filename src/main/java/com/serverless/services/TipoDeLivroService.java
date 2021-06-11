@@ -63,4 +63,10 @@ public class TipoDeLivroService {
         tipoDeLivroDb.setNome(tipoDeLivro.getNome());
         this.dynamoDBMapper.save(tipoDeLivroDb);
     }
+
+    public void deleteTipoDeLivro(String id) {
+        TipoDeLivro tipoDeLivro = buscarTipoDeLivroPorId(id);
+        LOG.info("delete o tipo de livro no dynamoDB com dynamoDBMapper");
+        this.dynamoDBMapper.delete(tipoDeLivro);
+    }
 }
