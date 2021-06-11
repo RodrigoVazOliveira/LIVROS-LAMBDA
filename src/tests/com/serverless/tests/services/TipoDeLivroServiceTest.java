@@ -32,16 +32,23 @@ public class TipoDeLivroServiceTest {
 
     private Iterable<TipoDeLivro> tipoDeLivrosTest;
 
+    private TipoDeLivro tipoDeLivro;
+
     @BeforeEach
     public void setup() {
         List<TipoDeLivro> listaTipoDeLivros = new ArrayList<>();
-        TipoDeLivro objeto = new TipoDeLivro();
-        objeto.setNome("Capa dura");
-        objeto.setId("1");
-        listaTipoDeLivros.add(objeto);
+
+        this.tipoDeLivro = new TipoDeLivro();
+        this.tipoDeLivro.setId("1");
+        this.tipoDeLivro.setNome("Capa dura");
+
+        listaTipoDeLivros.add(this.tipoDeLivro);
         this.tipoDeLivrosTest = listaTipoDeLivros;
+
         this.tipoDeLivros = mock(PaginatedQueryList.class,
                 withSettings().defaultAnswer(new ForwardsInvocations(listaTipoDeLivros)));
+
+
     }
 
     @Test
@@ -59,5 +66,14 @@ public class TipoDeLivroServiceTest {
                 .thenReturn(this.tipoDeLivros);
         Iterable<TipoDeLivro> tentativaTest = this.tipoDeLivroService.obterTodosTipoDeLivro();
         Assertions.assertEquals(this.tipoDeLivrosTest, tentativaTest);
+    }
+
+    @Test
+    public void testarAtualizarTipoDeLivroComSucesso() {
+        when(this.dynamoDBMapper.query(eq(TipoDeLivro.class), any(DynamoDBQueryExpression.class)))
+                .thenReturn(this.tipoDeLivros);
+        doNothing().when(this.dynamoDBMapper).save(this.tipoDeLivro);
+       this.tipoDeLivroService.atualizarTipoDeLivro(this.tipoDeLivro);
+       verify(this.dynamoDBMapper).save(any());
     }
 }
