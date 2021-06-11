@@ -1,10 +1,8 @@
 package com.serverless.tests.services;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.*;
-import com.serverless.configurations.DynamoDBConfiguration;
 import com.serverless.models.Genero;
 import com.serverless.services.GeneroService;
-import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,16 +25,10 @@ public class GeneroServiceTest {
     private DynamoDBMapper dynamoDBMapper;
 
     @Mock
-    private DynamoDBConfiguration dynamoDBConfiguration;
-
-    @Mock
     private PaginatedScanList<Genero> mockListaDeGenero;
 
     @Mock
     private PaginatedQueryList<Genero> mockListBuscaPorId;
-
-    @Mock
-    private List<Genero> mockListRetornoBuscaPorId;
 
     @InjectMocks
     private GeneroService generoService;
@@ -45,7 +37,6 @@ public class GeneroServiceTest {
 
     @BeforeEach
     public void setup() {
-        lenient().when(dynamoDBConfiguration.getDynamoDBMapper()).thenReturn(dynamoDBMapper);
         this.testeGenero = new Genero();
         this.testeGenero.setNome("Nome 1");
     }
@@ -61,7 +52,7 @@ public class GeneroServiceTest {
     public void testarObterTodosGeneros() {
         lenient().when(this.dynamoDBMapper.scan(eq(Genero.class), any(DynamoDBScanExpression.class))).thenReturn(this.mockListaDeGenero);
         List<Genero> generos = (List<Genero>) generoService.obterTodosGeneros();
-        Assert.assertEquals(this.mockListaDeGenero.size(), generos.size());
+        Assertions.assertEquals(this.mockListaDeGenero.size(), generos.size());
     }
 
     @Test
@@ -86,7 +77,7 @@ public class GeneroServiceTest {
             this.generoService.atualizarGenero(this.testeGenero);
         });
 
-        Assert.assertEquals(ex.getMessage(), "Não foi localziado nenhum genero com id IdTEst");
+        Assertions.assertEquals(ex.getMessage(), "Não foi localziado nenhum genero com id IdTEst");
     }
 
     @Test
@@ -109,6 +100,6 @@ public class GeneroServiceTest {
         RuntimeException respostaTest = Assertions.assertThrows(RuntimeException.class, () -> {
             this.generoService.deletarGenero("2");
         });
-        Assert.assertEquals(respostaTest, respostaEsperada);
+        Assertions.assertEquals(respostaTest, respostaEsperada);
     }
 }
