@@ -16,9 +16,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import static org.mockito.Mockito.when;
 
@@ -32,9 +30,8 @@ public class ObterTodosTipoDeLivroTest {
     private Context context;
 
     @InjectMocks
-    private ObterTodosTipoDeLivro        obterTodosTipoDeLivro;
+    private ObterTodosTipoDeLivro obterTodosTipoDeLivro;
 
-    @Mock
     private Iterable<TipoDeLivro> tipoDeLivros;
 
     private Map<String, Object> input;
@@ -45,6 +42,11 @@ public class ObterTodosTipoDeLivroTest {
     public void setup() {
         this.input = new HashMap<>();
         this.objectMapper = new ObjectMapper();
+
+        List<TipoDeLivro> tipoDeLivrosList = new ArrayList<>();
+        tipoDeLivrosList.add(new TipoDeLivro());
+
+        this.tipoDeLivros = tipoDeLivrosList;
     }
 
     @Test
