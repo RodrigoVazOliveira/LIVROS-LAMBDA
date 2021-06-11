@@ -38,7 +38,7 @@ public class DeleteTipoDeLivro implements RequestHandler<Map<String, Object>, Ap
                     .build();
         } catch (RuntimeException e) {
             return ApiGatewayResponse.builder()
-                    .setStatusCode(204)
+                    .setStatusCode(400)
                     .setObjectBody(new Response(e.getMessage(), stringObjectMap))
                     .setHeaders(Collections.singletonMap("X-Powered-By", "AWS Lambda & serverless"))
                     .build();

@@ -5,7 +5,7 @@ import com.serverless.ApiGatewayResponse;
 import com.serverless.Response;
 import com.serverless.functions.tipodelivro.DeleteTipoDeLivro;
 import com.serverless.services.TipoDeLivroService;
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,8 +17,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.mockito.Mockito.anyString;
-import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class DeleteTipoDeLivroTest {
@@ -53,8 +52,28 @@ public class DeleteTipoDeLivroTest {
                 .setHeaders(Collections.singletonMap("X-Powered-By", "AWS Lambda & serverless"))
                 .build();
 
-        Assert.assertEquals(respostaEsperada.getStatusCode(), respostaTest.getStatusCode());
-        Assert.assertEquals(respostaEsperada.getBody(), respostaTest.getBody());
-        Assert.assertEquals(respostaEsperada.getHeaders(), respostaTest.getHeaders());
+        Assertions.assertEquals(respostaEsperada.getStatusCode(), respostaTest.getStatusCode());
+        Assertions.assertEquals(respostaEsperada.getBody(), respostaTest.getBody());
+        Assertions.assertEquals(respostaEsperada.getHeaders(), respostaTest.getHeaders());
+    }
+
+    @Test
+    public void testarDeleteTipoDeLivroComErro() {
+        doThrow(new RuntimeException("não existe um tipo de livro com id 1"))
+                .when(this.tipoDeLivroService).deleteTipoDeLivro(anyString());
+
+        this.input.put("id", "1");
+
+        ApiGatewayResponse respostaTest = this.deleteTipoDeLivro.handleRequest(this.input, this.context);
+
+        ApiGatewayResponse respostaEsperada = ApiGatewayResponse.builder()
+                .setObjectBody(new Response("não existe um tipo de livro com id 1", this.input))
+                .setStatusCode(400)
+                .setHeaders(Collections.singletonMap("X-Powered-By", "AWS Lambda & serverless"))
+                .build();
+
+        Assertions.assertEquals(respostaEsperada.getStatusCode(), respostaTest.getStatusCode());
+        Assertions.assertEquals(respostaEsperada.getBody(), respostaTest.getBody());
+        Assertions.assertEquals(respostaEsperada.getHeaders(), respostaTest.getHeaders());
     }
 }
