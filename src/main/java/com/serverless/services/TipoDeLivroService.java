@@ -59,6 +59,8 @@ public class TipoDeLivroService {
      }
 
     public void atualizarTipoDeLivro(TipoDeLivro tipoDeLivro) {
-
+        TipoDeLivro tipoDeLivroDb = buscarTipoDeLivroPorId(tipoDeLivro.getId());
+        tipoDeLivroDb.setNome(tipoDeLivro.getNome());
+        this.dynamoDBMapper.save(tipoDeLivroDb);
     }
 }
