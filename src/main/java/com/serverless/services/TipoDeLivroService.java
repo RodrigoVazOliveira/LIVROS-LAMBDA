@@ -8,24 +8,18 @@ import org.apache.logging.log4j.Logger;
 
 public class TipoDeLivroService {
 
-    private DynamoDBMapper dynamoDBMapper;
-    private DynamoDBConfiguration dynamoDBConfiguration;
+    private DynamoDBMapper dynamoDBMapper = DynamoDBConfiguration.build();
     private static final Logger LOG = LogManager.getLogger(GeneroService.class);
 
-    public void cadastrarNovoTipoDeLivro(TipoDeLivro tipoDeLivro) {
-        gerarMapper();
-        this.dynamoDBMapper.save(tipoDeLivro);
+    public TipoDeLivroService() {
     }
 
-    private void gerarMapper() {
-        LOG.info("Gerando o mapper com as configurações do ambiente");
-        if (this.dynamoDBConfiguration == null) {
-            this.dynamoDBConfiguration = new DynamoDBConfiguration();
-            this.dynamoDBConfiguration.build();
-            this.dynamoDBConfiguration.buildDynamoDBMapper();
-        }
+    public TipoDeLivroService(DynamoDBMapper dynamoDBMapper) {
+        this.dynamoDBMapper = dynamoDBMapper;
+    }
 
-        LOG.info("Obtendo o mapper");
-        this.dynamoDBMapper = this.dynamoDBConfiguration.getDynamoDBMapper();
+    public void cadastrarNovoTipoDeLivro(TipoDeLivro tipoDeLivro) {
+        LOG.info("service: Gravando tipo de livro no dynamoDB");
+        this.dynamoDBMapper.save(tipoDeLivro);
     }
 }
