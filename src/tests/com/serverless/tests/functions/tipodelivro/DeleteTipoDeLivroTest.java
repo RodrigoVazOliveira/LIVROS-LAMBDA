@@ -3,6 +3,7 @@ package com.serverless.tests.functions.tipodelivro;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.serverless.ApiGatewayResponse;
 import com.serverless.Response;
+import com.serverless.functions.tipodelivro.DeleteTipoDeLivro;
 import com.serverless.services.TipoDeLivroService;
 import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
@@ -44,7 +45,7 @@ public class DeleteTipoDeLivroTest {
 
         this.input.put("id", "1");
 
-        ApiGatewayResponse respostaTest = this.deleteTipoDeLivro.handlerRequest(this.input, this.context);
+        ApiGatewayResponse respostaTest = this.deleteTipoDeLivro.handleRequest(this.input, this.context);
 
         ApiGatewayResponse respostaEsperada = ApiGatewayResponse.builder()
                 .setObjectBody(new Response("tipo de livro deletado!", this.input))
