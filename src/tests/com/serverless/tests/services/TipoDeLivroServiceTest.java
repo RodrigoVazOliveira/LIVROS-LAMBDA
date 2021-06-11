@@ -30,18 +30,29 @@ public class TipoDeLivroServiceTest {
 
     private PaginatedQueryList<TipoDeLivro> tipoDeLivros;
 
+    private PaginatedQueryList<TipoDeLivro> tipoDeLivrosError;
+
     private Iterable<TipoDeLivro> tipoDeLivrosTest;
+
+    private TipoDeLivro tipoDeLivro;
 
     @BeforeEach
     public void setup() {
         List<TipoDeLivro> listaTipoDeLivros = new ArrayList<>();
-        TipoDeLivro objeto = new TipoDeLivro();
-        objeto.setNome("Capa dura");
-        objeto.setId("1");
-        listaTipoDeLivros.add(objeto);
+
+        this.tipoDeLivro = new TipoDeLivro();
+        this.tipoDeLivro.setId("1");
+        this.tipoDeLivro.setNome("Capa dura");
+
+        listaTipoDeLivros.add(this.tipoDeLivro);
         this.tipoDeLivrosTest = listaTipoDeLivros;
+
         this.tipoDeLivros = mock(PaginatedQueryList.class,
                 withSettings().defaultAnswer(new ForwardsInvocations(listaTipoDeLivros)));
+
+        List<TipoDeLivro> listaComError = new ArrayList<>();
+        this.tipoDeLivrosError = mock(PaginatedQueryList.class,
+                withSettings().defaultAnswer(new ForwardsInvocations(listaComError)));
     }
 
     @Test
@@ -59,5 +70,24 @@ public class TipoDeLivroServiceTest {
                 .thenReturn(this.tipoDeLivros);
         Iterable<TipoDeLivro> tentativaTest = this.tipoDeLivroService.obterTodosTipoDeLivro();
         Assertions.assertEquals(this.tipoDeLivrosTest, tentativaTest);
+    }
+
+    @Test
+    public void testarAtualizarTipoDeLivroComSucesso() {
+        when(this.dynamoDBMapper.query(eq(TipoDeLivro.class), any(DynamoDBQueryExpression.class)))
+                .thenReturn(this.tipoDeLivros);
+        doNothing().when(this.dynamoDBMapper).save(this.tipoDeLivro);
+       this.tipoDeLivroService.atualizarTipoDeLivro(this.tipoDeLivro);
+       verify(this.dynamoDBMapper).save(any());
+    }
+
+    @Test
+    public void testarAtualizarTipoDeLivroComErro() {
+        when(this.dynamoDBMapper.query(eq(TipoDeLivro.class), any(DynamoDBQueryExpression.class)))
+                .thenReturn(this.tipoDeLivrosError);
+        RuntimeException resposta = Assertions.assertThrows(RuntimeException.class, () -> {
+            this.tipoDeLivroService.atualizarTipoDeLivro(this.tipoDeLivro);
+        });
+        Assertions.assertEquals("não existe um tipo de livro com id 1", resposta.getMessage());
     }
 }
