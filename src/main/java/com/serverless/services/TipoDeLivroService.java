@@ -66,6 +66,7 @@ public class TipoDeLivroService {
 
     public void deleteTipoDeLivro(String id) {
         TipoDeLivro tipoDeLivro = buscarTipoDeLivroPorId(id);
+        LOG.info("delete o tipo de livro no dynamoDB com dynamoDBMapper");
         this.dynamoDBMapper.delete(tipoDeLivro);
     }
 }
