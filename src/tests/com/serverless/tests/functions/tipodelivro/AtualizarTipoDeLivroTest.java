@@ -3,6 +3,7 @@ package com.serverless.tests.functions.tipodelivro;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.serverless.ApiGatewayResponse;
 import com.serverless.Response;
+import com.serverless.functions.tipodelivro.AtualizarTipoDeLivro;
 import com.serverless.models.TipoDeLivro;
 import com.serverless.services.TipoDeLivroService;
 import org.junit.Assert;
