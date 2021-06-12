@@ -1,8 +1,6 @@
 package com.serverless.tests.services;
 
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
-import com.amazonaws.services.dynamodbv2.datamodeling.PaginatedQueryList;
+import com.amazonaws.services.dynamodbv2.datamodeling.*;
 import com.serverless.models.TipoDeLivro;
 import com.serverless.services.TipoDeLivroService;
 import org.junit.jupiter.api.Assertions;
@@ -28,9 +26,13 @@ public class TipoDeLivroServiceTest {
     @InjectMocks
     private TipoDeLivroService tipoDeLivroService;
 
-    private PaginatedQueryList<TipoDeLivro> tipoDeLivros;
+    private PaginatedScanList<TipoDeLivro> tipoDeLivros;
 
-    private PaginatedQueryList<TipoDeLivro> tipoDeLivrosError;
+    private PaginatedScanList<TipoDeLivro> tipoDeLivrosError;
+
+    private PaginatedQueryList<TipoDeLivro> tipoDeLivrosQuery;
+
+    private PaginatedQueryList<TipoDeLivro> tipoDeLivrosQueryError;
 
     private Iterable<TipoDeLivro> tipoDeLivrosTest;
 
@@ -47,11 +49,17 @@ public class TipoDeLivroServiceTest {
         listaTipoDeLivros.add(this.tipoDeLivro);
         this.tipoDeLivrosTest = listaTipoDeLivros;
 
-        this.tipoDeLivros = mock(PaginatedQueryList.class,
+        this.tipoDeLivros = mock(PaginatedScanList.class,
+                withSettings().defaultAnswer(new ForwardsInvocations(listaTipoDeLivros)));
+
+        this.tipoDeLivrosQuery = mock(PaginatedQueryList.class,
                 withSettings().defaultAnswer(new ForwardsInvocations(listaTipoDeLivros)));
 
         List<TipoDeLivro> listaComError = new ArrayList<>();
-        this.tipoDeLivrosError = mock(PaginatedQueryList.class,
+        this.tipoDeLivrosError = mock(PaginatedScanList.class,
+                withSettings().defaultAnswer(new ForwardsInvocations(listaComError)));
+
+        this.tipoDeLivrosQueryError = mock(PaginatedQueryList.class,
                 withSettings().defaultAnswer(new ForwardsInvocations(listaComError)));
     }
 
@@ -66,7 +74,7 @@ public class TipoDeLivroServiceTest {
 
     @Test
     public void testarObterTodosTipoDeLivroComSucesso() {
-        when(this.dynamoDBMapper.query(eq(TipoDeLivro.class), any(DynamoDBQueryExpression.class)))
+        when(this.dynamoDBMapper.scan(eq(TipoDeLivro.class), any(DynamoDBScanExpression.class)))
                 .thenReturn(this.tipoDeLivros);
         Iterable<TipoDeLivro> tentativaTest = this.tipoDeLivroService.obterTodosTipoDeLivro();
         Assertions.assertEquals(this.tipoDeLivrosTest, tentativaTest);
@@ -75,7 +83,7 @@ public class TipoDeLivroServiceTest {
     @Test
     public void testarAtualizarTipoDeLivroComSucesso() {
         when(this.dynamoDBMapper.query(eq(TipoDeLivro.class), any(DynamoDBQueryExpression.class)))
-                .thenReturn(this.tipoDeLivros);
+                .thenReturn(this.tipoDeLivrosQuery);
         doNothing().when(this.dynamoDBMapper).save(this.tipoDeLivro);
        this.tipoDeLivroService.atualizarTipoDeLivro(this.tipoDeLivro);
        verify(this.dynamoDBMapper).save(any());
@@ -84,7 +92,7 @@ public class TipoDeLivroServiceTest {
     @Test
     public void testarAtualizarTipoDeLivroComErro() {
         when(this.dynamoDBMapper.query(eq(TipoDeLivro.class), any(DynamoDBQueryExpression.class)))
-                .thenReturn(this.tipoDeLivrosError);
+                .thenReturn(this.tipoDeLivrosQueryError);
         RuntimeException resposta = Assertions.assertThrows(RuntimeException.class, () -> {
             this.tipoDeLivroService.atualizarTipoDeLivro(this.tipoDeLivro);
         });

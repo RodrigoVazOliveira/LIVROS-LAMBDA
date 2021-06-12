@@ -31,7 +31,7 @@ public class DeleteTipoDeLivro implements RequestHandler<Map<String, Object>, Ap
     @Override
     public ApiGatewayResponse handleRequest(Map<String, Object> input, Context context) {
         LOG.info("Iniciando o lambda e tratando os dados enviados");
-        getData();
+        getData(input);
         LOG.info("Iniciando serviço do tipo do livro para deletar o tipo de livro no ndynamoDB");
         try {
             this.tipoDeLivroService.deleteTipoDeLivro(this.id);
@@ -57,6 +57,5 @@ public class DeleteTipoDeLivro implements RequestHandler<Map<String, Object>, Ap
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 }

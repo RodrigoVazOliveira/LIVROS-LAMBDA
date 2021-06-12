@@ -38,8 +38,7 @@ public class AtualizarGeneroTest {
         Mockito.lenient().doNothing().when(this.generoService).atualizarGenero(Mockito.any());
 
         Map<String, Object> input = new HashMap<>();
-        input.put("Id", "2");
-        input.put("nome", "Ficção cientifica");
+        input.put("body", "{\"id\":\"2\", \"nome\":\"Ficção Cientifica\"}");
 
         ApiGatewayResponse responseEsperada =  ApiGatewayResponse.builder()
                 .setStatusCode(201)
@@ -60,8 +59,7 @@ public class AtualizarGeneroTest {
                 .when(this.generoService).atualizarGenero(Mockito.any());
 
         Map<String, Object> input = new HashMap<>();
-        input.put("Id", "2");
-        input.put("nome", "Ficção cientifica");
+        input.put("body", "{\"id\":\"2\", \"nome\":\"Ficção Cientifica\"}");
 
         ApiGatewayResponse responseEsperada =  ApiGatewayResponse.builder()
                 .setStatusCode(400)

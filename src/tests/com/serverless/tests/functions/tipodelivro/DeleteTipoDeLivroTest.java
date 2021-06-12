@@ -41,11 +41,8 @@ public class DeleteTipoDeLivroTest {
     @Test
     public void testarDeleteTipoDeLivroComSucesso() {
         doNothing().when(this.tipoDeLivroService).deleteTipoDeLivro(anyString());
-
-        this.input.put("id", "1");
-
+        this.input.put("body", "{\"id\": \"1\"}");
         ApiGatewayResponse respostaTest = this.deleteTipoDeLivro.handleRequest(this.input, this.context);
-
         ApiGatewayResponse respostaEsperada = ApiGatewayResponse.builder()
                 .setObjectBody(new Response("tipo de livro deletado!", this.input))
                 .setStatusCode(204)
@@ -61,11 +58,8 @@ public class DeleteTipoDeLivroTest {
     public void testarDeleteTipoDeLivroComErro() {
         doThrow(new RuntimeException("não existe um tipo de livro com id 1"))
                 .when(this.tipoDeLivroService).deleteTipoDeLivro(anyString());
-
-        this.input.put("id", "1");
-
+        this.input.put("body", "{\"id\": \"1\"}");
         ApiGatewayResponse respostaTest = this.deleteTipoDeLivro.handleRequest(this.input, this.context);
-
         ApiGatewayResponse respostaEsperada = ApiGatewayResponse.builder()
                 .setObjectBody(new Response("não existe um tipo de livro com id 1", this.input))
                 .setStatusCode(400)
