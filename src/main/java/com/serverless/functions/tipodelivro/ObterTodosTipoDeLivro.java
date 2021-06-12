@@ -27,13 +27,13 @@ public class ObterTodosTipoDeLivro implements RequestHandler<Map<String, Object>
     }
 
     @Override
-    public ApiGatewayResponse handleRequest(Map<String, Object> stringObjectMap, Context context) {
+    public ApiGatewayResponse handleRequest(Map<String, Object> input, Context context) {
         LOG.info("Iniciar processo para obter todos os tipo de livros");
 
         Iterable<TipoDeLivro> tipoDeLivros = this.tipoDeLivroService.obterTodosTipoDeLivro();
         return ApiGatewayResponse.builder()
                 .setStatusCode(200)
-                .setObjectBody(new Response(Jackson.toJsonString(tipoDeLivros), stringObjectMap))
+                .setObjectBody(new Response(Jackson.toJsonString(tipoDeLivros), input))
                 .setHeaders(Collections.singletonMap("X-Powered-By", "AWS Lambda & serverless"))
                 .build();
     }

@@ -50,11 +50,8 @@ public class AtualizarTipoDeLivroTest {
     @Test
     public void testarHandlerRequestComSucesso() {
         doNothing().when(this.tipoDeLivroService).atualizarTipoDeLivro(any());
-        input.put("id", "1");
-        input.put("nome", "Capa dura");
-
+        this.input.put("body", "{\"id\":\"1\", \"nome\":\"Capa dura\"}");
         ApiGatewayResponse respostaTest = this.atualizarTipoDeLivro.handleRequest(this.input, this.context);
-
         ApiGatewayResponse respostaEsperada = ApiGatewayResponse.builder()
                 .setStatusCode(201)
                 .setObjectBody(new Response("Dados atualizado com sucesso! " + this.tipoDeLivro, input))
@@ -70,11 +67,8 @@ public class AtualizarTipoDeLivroTest {
     public void testarHandlerRequestComError() {
         doThrow(new RuntimeException("não existe um tipo de livro com id 1"))
                 .when(this.tipoDeLivroService).atualizarTipoDeLivro(any());
-        input.put("id", "1");
-        input.put("nome", "Capa dura");
-
+        this.input.put("body", "{\"id\":\"1\", \"nome\":\"Capa dura\"}");
         ApiGatewayResponse respostaTest = this.atualizarTipoDeLivro.handleRequest(this.input, this.context);
-
         ApiGatewayResponse respostaEsperada = ApiGatewayResponse.builder()
                 .setStatusCode(400)
                 .setObjectBody(new Response("não existe um tipo de livro com id 1", this.input))

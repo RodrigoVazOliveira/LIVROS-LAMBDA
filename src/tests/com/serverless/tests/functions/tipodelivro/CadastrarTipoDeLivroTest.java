@@ -6,7 +6,7 @@ import com.serverless.Response;
 import com.serverless.functions.tipodelivro.CadastrarTipoDeLivro;
 import com.serverless.models.TipoDeLivro;
 import com.serverless.services.TipoDeLivroService;
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -35,24 +35,19 @@ public class CadastrarTipoDeLivroTest {
     @Test
     public void testarCadastroDeTipoDeLivroComSucesso() {
         Mockito.doNothing().when(this.tipoDeLivroService).cadastrarNovoTipoDeLivro(Mockito.any(TipoDeLivro.class));
-
         this.input = new HashMap<>();
-        this.input.put("nome", "bolso");
-
+        this.input.put("body", "{\"nome\": \"bolso\"}");
         TipoDeLivro tipoDeLivro = new TipoDeLivro();
-
         tipoDeLivro.setNome("bolso");
-
         ApiGatewayResponse respostaEsperada = ApiGatewayResponse.builder()
                 .setHeaders(Collections.singletonMap("X-Powered-By", "AWS Lambda & serverless"))
                 .setObjectBody(new Response("O tipo de livro " + tipoDeLivro + " foi gravado com sucesso!", input))
                 .setStatusCode(201)
                 .build();
-
         ApiGatewayResponse respostaTest =  this.cadastrarTipoDeLivro.handleRequest(input, this.context);
 
-        Assert.assertEquals(respostaEsperada.getStatusCode(), respostaTest.getStatusCode());
-        Assert.assertEquals(respostaEsperada.getBody(), respostaTest.getBody());
-        Assert.assertEquals(respostaEsperada.getHeaders(), respostaTest.getHeaders());
+        Assertions.assertEquals(respostaEsperada.getStatusCode(), respostaTest.getStatusCode());
+        Assertions.assertEquals(respostaEsperada.getBody(), respostaTest.getBody());
+        Assertions.assertEquals(respostaEsperada.getHeaders(), respostaTest.getHeaders());
     }
 }

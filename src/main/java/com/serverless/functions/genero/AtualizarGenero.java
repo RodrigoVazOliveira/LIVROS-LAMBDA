@@ -2,6 +2,8 @@ package com.serverless.functions.genero;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.serverless.ApiGatewayResponse;
 import com.serverless.Response;
 import com.serverless.models.Genero;
@@ -9,6 +11,7 @@ import com.serverless.services.GeneroService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.IOException;
 import java.util.Collections;
 import java.util.Map;
 
@@ -27,17 +30,27 @@ public class AtualizarGenero implements RequestHandler<Map<String, Object>, ApiG
     }
 
     @Override
-    public ApiGatewayResponse handleRequest(Map<String, Object> stringObjectMap, Context context) {
+    public ApiGatewayResponse handleRequest(Map<String, Object> input, Context context) {
         LOG.info("Capturando as informações enviadas.");
 
-        this.genero.setId(stringObjectMap.get("Id").toString());
-        this.genero.setNome(stringObjectMap.get("nome").toString());
+        getData(input);
 
         LOG.info("Iniciando o processo de atualização no DynamoDB");
 
-        return verificarResposta(stringObjectMap);
+        return verificarResposta(input);
     }
 
+    private void getData(Map<String, Object> input) {
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        try {
+            JsonNode body = objectMapper.readTree( (String) input.get("body") );
+            this.genero.setId(body.get("id").asText());
+            this.genero.setNome(body.get("nome").asText());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     public ApiGatewayResponse verificarResposta(Map<String, Object> input) {
         LOG.info("Gerando resposta");
