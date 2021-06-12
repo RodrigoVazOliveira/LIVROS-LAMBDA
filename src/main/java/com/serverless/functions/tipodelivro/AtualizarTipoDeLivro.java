@@ -26,11 +26,11 @@ public class AtualizarTipoDeLivro implements RequestHandler<Map<String, Object>,
     }
 
     @Override
-    public ApiGatewayResponse handleRequest(Map<String, Object> stringObjectMap, Context context) {
+    public ApiGatewayResponse handleRequest(Map<String, Object> input, Context context) {
         LOG.info("Inciiando o funcionamento do lambda para atualizar");
         TipoDeLivro tipoDeLivro = new TipoDeLivro();
-        tipoDeLivro.setId(stringObjectMap.get("id").toString());
-        tipoDeLivro.setNome(stringObjectMap.get("nome").toString());
+        tipoDeLivro.setId(input.get("id").toString());
+        tipoDeLivro.setNome(input.get("nome").toString());
 
         try {
             LOG.info("Inciando da atualização do tipo de livro!");
@@ -38,14 +38,14 @@ public class AtualizarTipoDeLivro implements RequestHandler<Map<String, Object>,
             return ApiGatewayResponse.builder()
                     .setStatusCode(201)
                     .setObjectBody(new Response("Dados atualizado com sucesso! " + tipoDeLivro,
-                            stringObjectMap))
+                            input))
                     .setHeaders(Collections.singletonMap("X-Powered-By", "AWS Lambda & serverless"))
                     .build();
         } catch (RuntimeException e) {
             LOG.info("erro na atualização do tipo de livro!");
             return ApiGatewayResponse.builder()
                     .setStatusCode(400)
-                    .setObjectBody(new Response(e.getMessage(), stringObjectMap))
+                    .setObjectBody(new Response(e.getMessage(), input))
                     .setHeaders(Collections.singletonMap("X-Powered-By", "AWS Lambda & serverless"))
                     .build();
         }

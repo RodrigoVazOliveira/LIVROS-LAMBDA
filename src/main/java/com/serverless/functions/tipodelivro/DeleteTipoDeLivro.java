@@ -25,21 +25,21 @@ public class DeleteTipoDeLivro implements RequestHandler<Map<String, Object>, Ap
     }
 
     @Override
-    public ApiGatewayResponse handleRequest(Map<String, Object> stringObjectMap, Context context) {
+    public ApiGatewayResponse handleRequest(Map<String, Object> input, Context context) {
         LOG.info("Iniciando o lambda e tratando os dados enviados");
-        String id = stringObjectMap.get("id").toString();
+        String id = input.get("id").toString();
         LOG.info("Iniciando serviço do tipo do livro para deletar o tipo de livro no ndynamoDB");
         try {
             this.tipoDeLivroService.deleteTipoDeLivro(id);
             return ApiGatewayResponse.builder()
                     .setStatusCode(204)
-                    .setObjectBody(new Response("tipo de livro deletado!", stringObjectMap))
+                    .setObjectBody(new Response("tipo de livro deletado!", input))
                     .setHeaders(Collections.singletonMap("X-Powered-By", "AWS Lambda & serverless"))
                     .build();
         } catch (RuntimeException e) {
             return ApiGatewayResponse.builder()
                     .setStatusCode(400)
-                    .setObjectBody(new Response(e.getMessage(), stringObjectMap))
+                    .setObjectBody(new Response(e.getMessage(), input))
                     .setHeaders(Collections.singletonMap("X-Powered-By", "AWS Lambda & serverless"))
                     .build();
         }

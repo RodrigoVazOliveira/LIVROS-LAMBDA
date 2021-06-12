@@ -26,12 +26,12 @@ public class CadastrarTipoDeLivro implements RequestHandler<Map<String, Object>,
     }
 
     @Override
-    public ApiGatewayResponse handleRequest(Map<String, Object> stringObjectMap, Context context) {
+    public ApiGatewayResponse handleRequest(Map<String, Object> input, Context context) {
         LOG.info("Inicio de gravação dos dados do tipo de livro");
         LOG.info("Resgatando dados enviados");
 
         TipoDeLivro tipoDeLivro = new TipoDeLivro();
-        tipoDeLivro.setNome(stringObjectMap.get("nome").toString());
+        tipoDeLivro.setNome(input.get("nome").toString());
 
         LOG.info("Gravando os dados no dynamoDB");
         this.tipoDeLivroService.cadastrarNovoTipoDeLivro(tipoDeLivro);
@@ -40,7 +40,7 @@ public class CadastrarTipoDeLivro implements RequestHandler<Map<String, Object>,
                 .setHeaders(Collections.singletonMap("X-Powered-By", "AWS Lambda & serverless"))
                 .setObjectBody(
                         new Response("O tipo de livro " + tipoDeLivro + " foi gravado com sucesso!"
-                                , stringObjectMap))
+                                , input))
                 .setStatusCode(201)
                 .build();
     }
