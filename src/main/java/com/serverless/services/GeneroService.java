@@ -36,7 +36,7 @@ public class GeneroService {
 
     public Iterable<Genero> obterTodosGeneros() {
         LOG.info("Gerando a lista com todos generos cadastrados com dynamoDB");
-        return this.dynamoDBMapper.scan(Genero.class, new DynamoDBScanExpression()).stream().collect(Collectors.toList());
+            return this.dynamoDBMapper.scan(Genero.class, new DynamoDBScanExpression()).stream().collect(Collectors.toList());
     }
 
     public Genero buscarGeneroPorId(String id) {

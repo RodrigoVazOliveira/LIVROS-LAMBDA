@@ -2,6 +2,7 @@ package com.serverless.services;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.serverless.configurations.DynamoDBConfiguration;
 import com.serverless.models.TipoDeLivro;
@@ -32,7 +33,7 @@ public class TipoDeLivroService {
 
     public Iterable<TipoDeLivro> obterTodosTipoDeLivro() {
         LOG.info("Acessando dynamoDB para obter os dados do tipo de livro");
-        return this.dynamoDBMapper.query(TipoDeLivro.class, new DynamoDBQueryExpression<>())
+        return this.dynamoDBMapper.scan(TipoDeLivro.class, new DynamoDBScanExpression())
                 .stream().collect(Collectors.toList());
     }
 
