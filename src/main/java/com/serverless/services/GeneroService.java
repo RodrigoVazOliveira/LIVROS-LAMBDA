@@ -3,15 +3,12 @@ package com.serverless.services;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
-import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.serverless.configurations.DynamoDBConfiguration;
 import com.serverless.models.Genero;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 public class GeneroService {
@@ -41,12 +38,11 @@ public class GeneroService {
 
     public Genero buscarGeneroPorId(String id) {
         LOG.info("Gerando o map para fazer a consulta");
-        Map<String, AttributeValue> valorABuscar = new HashMap<>();
-        valorABuscar.put("valorUm", new AttributeValue().withS(id));
+        Genero genero = new Genero();
+        genero.setId(id);
 
         DynamoDBQueryExpression<Genero> query = new DynamoDBQueryExpression<>();
-        query.withConditionalOperator("Id = :valorUm");
-        query.withExpressionAttributeValues(valorABuscar);
+        query.withHashKeyValues(genero);
 
         LOG.info("buscando e gerando a lista com retorno da consulta com dynamoDB");
         List<Genero> resultado = this.dynamoDBMapper.query(Genero.class, query).stream().collect(Collectors.toList());
