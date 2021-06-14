@@ -18,6 +18,7 @@ public class ObterGenero implements RequestHandler<Map<String, Object>, ApiGatew
 
     private static final Logger LOG = LogManager.getLogger(ObterGenero.class);
     private GeneroService generoService;
+    private Map<String, Object> input;
 
     public ObterGenero() {
         this.generoService = new GeneroService();
@@ -30,12 +31,11 @@ public class ObterGenero implements RequestHandler<Map<String, Object>, ApiGatew
     @Override
     public ApiGatewayResponse handleRequest(Map<String, Object> input, Context context) {
         LOG.info("Iniciar processo para gerar lista de generos!");
-
-        String generos = converterListaDeGeneroParaJson(this.generoService.obterTodosGeneros());
-
+        this.input = input;
+        String mensagem = converterListaDeGeneroParaJson(this.generoService.obterTodosGeneros());
         LOG.info("Gerado lista de generos!");
 
-        return criarResposta(generos, input);
+        return criarResposta(mensagem);
     }
 
     private String converterListaDeGeneroParaJson(Iterable<Genero> generos) {
@@ -51,11 +51,11 @@ public class ObterGenero implements RequestHandler<Map<String, Object>, ApiGatew
         return resultado;
     }
 
-    private ApiGatewayResponse criarResposta(String mensagem, Map<String, Object> stringObjectMap) {
+    private ApiGatewayResponse criarResposta(String mensagem) {
         return ApiGatewayResponse.builder()
                 .setStatusCode(200)
                 .setHeaders(Collections.singletonMap("X-Powered-By", "AWS Lambda & serverless"))
-                .setObjectBody(new Response(mensagem, stringObjectMap))
+                .setObjectBody(new Response(mensagem, this.input))
                 .build();
     }
 }

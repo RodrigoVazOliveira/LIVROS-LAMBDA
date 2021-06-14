@@ -32,9 +32,7 @@ public class AtualizarGenero implements RequestHandler<Map<String, Object>, ApiG
     @Override
     public ApiGatewayResponse handleRequest(Map<String, Object> input, Context context) {
         LOG.info("Capturando as informações enviadas.");
-
         getData(input);
-
         LOG.info("Iniciando o processo de atualização no DynamoDB");
 
         return verificarResposta(input);
