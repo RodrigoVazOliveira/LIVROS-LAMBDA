@@ -54,4 +54,16 @@ public class GravarLivro implements RequestHandler<Map<String, Object>, ApiGatew
         this.livro = ObjectMapperProxy.getObjectMapper().convertValue(body, Livro.class);
     }
 
+
+    private void gravarNovoLivroNoDynamoDB() {
+        try {
+            LOG.info("Persistindo os dados no dynamoDB");
+            this.livroService.gravarNovoLivro(this.livro);
+            this.response = gerarRespostaComSucesso();
+        } catch (RuntimeException e) {
+            LOG.error("ocorre um erro ao persistir os dados no dynamoDB");
+            this.response = gerarRespostaComErro(e);
+        }
+    }
+
 }
