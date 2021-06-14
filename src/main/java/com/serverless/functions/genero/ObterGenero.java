@@ -3,9 +3,9 @@ package com.serverless.functions.genero;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.serverless.ApiGatewayResponse;
 import com.serverless.Response;
+import com.serverless.helper.ObjectMapperProxy;
 import com.serverless.models.Genero;
 import com.serverless.services.GeneroService;
 import org.apache.logging.log4j.LogManager;
@@ -18,6 +18,8 @@ public class ObterGenero implements RequestHandler<Map<String, Object>, ApiGatew
 
     private static final Logger LOG = LogManager.getLogger(ObterGenero.class);
     private GeneroService generoService;
+    private Map<String, Object> input;
+    private String resultado;
 
     public ObterGenero() {
         this.generoService = new GeneroService();
@@ -30,32 +32,28 @@ public class ObterGenero implements RequestHandler<Map<String, Object>, ApiGatew
     @Override
     public ApiGatewayResponse handleRequest(Map<String, Object> input, Context context) {
         LOG.info("Iniciar processo para gerar lista de generos!");
-
-        String generos = converterListaDeGeneroParaJson(this.generoService.obterTodosGeneros());
-
+        this.input = input;
+        String mensagem = converterListaDeGeneroParaJson(this.generoService.obterTodosGeneros());
         LOG.info("Gerado lista de generos!");
 
-        return criarResposta(generos, input);
+        return criarResposta(mensagem);
     }
 
     private String converterListaDeGeneroParaJson(Iterable<Genero> generos) {
-        ObjectMapper objectMapper = new ObjectMapper();
-        String resultado;
-
         try {
-            resultado = objectMapper.writeValueAsString(generos);
+            this.resultado = ObjectMapperProxy.getObjectMapper().writeValueAsString(generos);
         } catch (JsonProcessingException e) {
-            resultado = e.getMessage();
+            this.resultado = e.getMessage();
         }
 
-        return resultado;
+        return this.resultado;
     }
 
-    private ApiGatewayResponse criarResposta(String mensagem, Map<String, Object> stringObjectMap) {
+    private ApiGatewayResponse criarResposta(String mensagem) {
         return ApiGatewayResponse.builder()
                 .setStatusCode(200)
                 .setHeaders(Collections.singletonMap("X-Powered-By", "AWS Lambda & serverless"))
-                .setObjectBody(new Response(mensagem, stringObjectMap))
+                .setObjectBody(new Response(mensagem, this.input))
                 .build();
     }
 }

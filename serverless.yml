@@ -7,7 +7,6 @@ provider:
   runtime: java8
   lambdaHashingVersion: 20201221
 
-# you can overwrite defaults here
   stage: dev
   region: us-east-2
 
