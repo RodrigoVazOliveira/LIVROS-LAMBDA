@@ -47,4 +47,11 @@ public class GravarLivro implements RequestHandler<Map<String, Object>, ApiGatew
         JsonNode body = GetInput.getBody(this.input);
         createLivro(body);
     }
+
+    private void createLivro(JsonNode body) {
+        LOG.info("Criando objeto livro para ser gravado");
+        this.objectMapper.findAndRegisterModules();
+        this.livro = ObjectMapperProxy.getObjectMapper().convertValue(body, Livro.class);
+    }
+
 }
