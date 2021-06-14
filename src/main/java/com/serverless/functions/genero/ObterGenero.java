@@ -28,14 +28,14 @@ public class ObterGenero implements RequestHandler<Map<String, Object>, ApiGatew
     }
 
     @Override
-    public ApiGatewayResponse handleRequest(Map<String, Object> stringObjectMap, Context context) {
+    public ApiGatewayResponse handleRequest(Map<String, Object> input, Context context) {
         LOG.info("Iniciar processo para gerar lista de generos!");
 
         String generos = converterListaDeGeneroParaJson(this.generoService.obterTodosGeneros());
 
         LOG.info("Gerado lista de generos!");
 
-        return criarResposta(generos, stringObjectMap);
+        return criarResposta(generos, input);
     }
 
     private String converterListaDeGeneroParaJson(Iterable<Genero> generos) {

@@ -10,23 +10,14 @@ provider:
   stage: dev
   region: us-east-2
 
-# you can add statements to the Lambda function's IAM Role here
-#  iamRoleStatements:
-#    - Effect: "Allow"
-#      Action:
-#        - "s3:ListBucket"
-#      Resource: { "Fn::Join" : ["", ["arn:aws:s3:::", { "Ref" : "ServerlessDeploymentBucket" } ] ]  }
-#    - Effect: "Allow"
-#      Action:
-#        - "s3:PutObject"
-#      Resource:
-#        Fn::Join:
-#          - ""
-#          - - "arn:aws:s3:::"
-#            - "Ref" : "ServerlessDeploymentBucket"
-#            - "/*"
-
-# you can define service wide environment variables here
+  iam:
+    role:
+      statements:
+        - Effect: "Allow"
+          Action:
+            - dynamodb:*
+          Resource: "*"
+  # you can define service wide environment variables here
 #  environment:
 #    variable1: value1
 
@@ -35,52 +26,52 @@ package:
   artifact: target/livro-graphql-lambda-dev.jar
 
 functions:
-  gravar-genero:
+  GravarGenero:
     handler: com.serverless.functions.genero.GravarGenero
     events:
-      - httpApi:
+      - http:
           path: /generos/
           method: post
-  obter-genero:
+  ObterGenero:
     handler: com.serverless.functions.genero.ObterGenero
     events:
-      - httpApi:
+      - http:
           path: /generos/
           method: get
-  atualizar-genero:
+  AtualizarGenero:
     handler: com.serverless.functions.genero.AtualizarGenero
     events:
-      - httpApi:
+      - http:
           path: /generos/
           method: put
-  delete-genero:
+  DeleteGenero:
     handler: com.serverless.functions.genero.DeleteGenero
     events:
-      - httpApi:
+      - http:
           path: /generos/
           method: delete
-  cadastrar-tipo-de-livro:
+  CadastrarTipoDeLivro:
     handler: com.serverless.functions.tipodelivro.CadastrarTipoDeLivro
     events:
-      - httpApi:
+      - http:
           path: /tipodelivros/
           method: post
-  atualizar-tipo-de-livro:
+  AtualizarTipoDeLivro:
     handler: com.serverless.functions.tipodelivro.AtualizarTipoDeLivro
     events:
-      - httpApi:
+      - http:
           path: /tipodelivros/
           method: put
-  obter-todos-tipo-de-livro:
+  ObterTodosTipoDeLivro:
     handler: com.serverless.functions.tipodelivro.ObterTodosTipoDeLivro
     events:
-      - httpApi:
+      - http:
           path: /tipodelivros/
           method: get
-  delete-tipo-de-livro:
+  DeleteTipoDeLivro:
     handler: com.serverless.functions.tipodelivro.DeleteTipoDeLivro
     events:
-      - httpApi:
+      - http:
           path: /tipodelivros/
           method: delete
 #    The following are a few example events you can configure
