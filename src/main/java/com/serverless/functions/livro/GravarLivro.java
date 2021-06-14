@@ -66,4 +66,19 @@ public class GravarLivro implements RequestHandler<Map<String, Object>, ApiGatew
         }
     }
 
+    private ApiGatewayResponse gerarRespostaComSucesso() {
+        LOG.info("Gerando resposta com sucesso!");
+        return ApiGatewayResponse.builder()
+                .setHeaders(Collections.singletonMap("X-Powered-By", "AWS Lambda & serverless"))
+                .setObjectBody(new Response("Livro gravado com sucesso!", this.input))
+                .setStatusCode(201).build();
+    }
+
+    private ApiGatewayResponse gerarRespostaComErro(RuntimeException e) {
+        LOG.info("Gerando resposta com erro");
+        return ApiGatewayResponse.builder()
+                .setHeaders(Collections.singletonMap("X-Powered-By", "AWS Lambda & serverless"))
+                .setObjectBody(new Response(e.getMessage(), this.input))
+                .setStatusCode(500).build();
+    }
 }
