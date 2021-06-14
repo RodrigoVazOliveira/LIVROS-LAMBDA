@@ -1,4 +1,4 @@
-package com.serverless.configurations;
+package com.serverless.helper;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
