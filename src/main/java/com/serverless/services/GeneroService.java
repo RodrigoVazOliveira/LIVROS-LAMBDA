@@ -33,14 +33,13 @@ public class GeneroService {
 
     public Iterable<Genero> obterTodosGeneros() {
         LOG.info("Gerando a lista com todos generos cadastrados com dynamoDB");
-            return this.dynamoDBMapper.scan(Genero.class, new DynamoDBScanExpression()).stream().collect(Collectors.toList());
+        return this.dynamoDBMapper.scan(Genero.class, new DynamoDBScanExpression()).stream().collect(Collectors.toList());
     }
 
     public Genero buscarGeneroPorId(String id) {
         LOG.info("Gerando o map para fazer a consulta");
         Genero genero = new Genero();
         genero.setId(id);
-
         DynamoDBQueryExpression<Genero> query = new DynamoDBQueryExpression<>();
         query.withHashKeyValues(genero);
 
@@ -54,6 +53,7 @@ public class GeneroService {
 
         return resultado.get(0);
     }
+
 
     public void atualizarGenero(Genero generoAtualizar) {
         Genero genero = this.buscarGeneroPorId(generoAtualizar.getId());

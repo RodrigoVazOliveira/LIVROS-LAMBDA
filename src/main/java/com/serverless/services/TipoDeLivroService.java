@@ -38,21 +38,27 @@ public class TipoDeLivroService {
         LOG.info("buscar tipo de livro por id no dynamoDB");
         TipoDeLivro tipoDeLivro = new TipoDeLivro();
         tipoDeLivro.setId(id);
-
-        LOG.info("Criando a query de busca!");
-        DynamoDBQueryExpression<TipoDeLivro> query = new DynamoDBQueryExpression<>();
-        query.withHashKeyValues(tipoDeLivro);
-
+        DynamoDBQueryExpression<TipoDeLivro> query = gerarQueryPorId(tipoDeLivro);
         LOG.info("Criando a lista de busca!");
         List<TipoDeLivro> resultadoDaBusca = this.dynamoDBMapper.query(TipoDeLivro.class, query)
                 .stream().collect(Collectors.toList());
-
-        if (resultadoDaBusca.size() == 0) {
-            LOG.error("busca com dados incorretos");
-            throw new RuntimeException("não existe um tipo de livro com id " + id);
-        }
+        gerarMensagemDeErro(resultadoDaBusca, id);
 
         return resultadoDaBusca.get(0);
+     }
+
+     private void gerarMensagemDeErro(List<TipoDeLivro> tipoDeLivros, String id) {
+         if (tipoDeLivros.size() == 0) {
+             LOG.error("busca com dados incorretos");
+             throw new RuntimeException("não existe um tipo de livro com id " + id);
+         }
+     }
+
+     private DynamoDBQueryExpression gerarQueryPorId(TipoDeLivro tipoDeLivro) {
+         LOG.info("Criando a query de busca!");
+         DynamoDBQueryExpression<TipoDeLivro> query = new DynamoDBQueryExpression<>();
+         query.withHashKeyValues(tipoDeLivro);
+         return query;
      }
 
     public void atualizarTipoDeLivro(TipoDeLivro tipoDeLivro) {
