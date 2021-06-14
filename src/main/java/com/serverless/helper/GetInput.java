@@ -13,11 +13,14 @@ public class GetInput {
 
     public static JsonNode getBody(Map<String, Object> input) {
         LOG.info("Obtendo dados enviados");
+        JsonNode body = null;
         try {
-            JsonNode body = ObjectMapperProxy.getObjectMapper().readTree((String) input.get("body"));
+            body = ObjectMapperProxy.getObjectMapper().readTree((String) input.get("body"));
+            return body;
         } catch (IOException e) {
             LOG.info("ocorreu um erro ao converter os dados");
             e.printStackTrace();
         }
+        return body;
     }
 }
