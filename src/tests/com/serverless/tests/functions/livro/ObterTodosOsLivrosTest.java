@@ -1,5 +1,6 @@
 package com.serverless.tests.functions.livro;
 
+import com.amazonaws.services.lambda.runtime.Context;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.serverless.ApiGatewayResponse;
@@ -15,9 +16,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import javax.naming.Context;
 import java.util.*;
 
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -50,9 +51,18 @@ public class ObterTodosOsLivrosTest {
     }
 
     @Test
-    public void testarObterTodosOsLivros() {
+    public void testarObterTodosOsLivrosComSucesso() {
         when(livroService.obterTodosOsLivros()).thenReturn(this.livros);
         ApiGatewayResponse responseExpect = responseWithSuccess();
+        ApiGatewayResponse responseActual = obterTodosOsLivros.handleRequest(this.input, this.context);
+
+        verifyTests(responseExpect, responseActual);
+    }
+
+    @Test
+    public void testarObterTodosOsLivrosComErro() {
+        doThrow(new RuntimeException("Ocorreu um erro")).when(this.livroService).obterTodosOsLivros();
+        ApiGatewayResponse responseExpect = responseWithError();
         ApiGatewayResponse responseActual = obterTodosOsLivros.handleRequest(this.input, this.context);
 
         verifyTests(responseExpect, responseActual);
@@ -70,6 +80,13 @@ public class ObterTodosOsLivrosTest {
                 .setStatusCode(200)
                 .setObjectBody(new Response(convertListLivrosToJson(), input))
                 .setHeaders(Collections.singletonMap("X-Powered-By", "AWS Lambda & serverless")).build();
+    }
+
+    public ApiGatewayResponse responseWithError() {
+        return ApiGatewayResponse.builder()
+                .setObjectBody(new Response("Ocorreu um erro", this.input))
+                .setHeaders(Collections.singletonMap("X-Powered-By", "AWS Lambda & serverless"))
+                .setStatusCode(500).build();
     }
 
     public String convertListLivrosToJson() {
