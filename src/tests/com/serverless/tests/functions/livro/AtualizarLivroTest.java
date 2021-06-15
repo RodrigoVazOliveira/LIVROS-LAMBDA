@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.serverless.ApiGatewayResponse;
 import com.serverless.Response;
+import com.serverless.functions.livro.AtualizarLivro;
 import com.serverless.helper.ObjectMapperProxy;
 import com.serverless.models.Genero;
 import com.serverless.models.Livro;
