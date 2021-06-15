@@ -38,8 +38,6 @@ public class ObterTodosOsLivros implements RequestHandler<Map<String, Object>, A
     public ApiGatewayResponse handleRequest(Map<String, Object> input, Context context) {
         LOG.info("Iniciando processo para obter os livros do dynamoDB");
         this.input = input;
-        this.livros = this.livroService.obterTodosOsLivros();
-        convertListLivrosToJson();
         buildResponse();
         return this.response;
     }
@@ -55,6 +53,7 @@ public class ObterTodosOsLivros implements RequestHandler<Map<String, Object>, A
     }
 
     private void responseWithSuccess() {
+        LOG.info("Gerando a resposta com sucesso!");
         this.response = ApiGatewayResponse.builder()
                 .setObjectBody(new Response(this.message, this.input))
                 .setHeaders(Collections.singletonMap("X-Powered-By", "AWS Lambda & serverless"))
@@ -62,9 +61,22 @@ public class ObterTodosOsLivros implements RequestHandler<Map<String, Object>, A
     }
 
     private void responseWithError(RuntimeException e) {
+        LOG.info("Gerando a resposta com erro");
         this.response = ApiGatewayResponse.builder()
                 .setObjectBody(new Response(e.getMessage(), this.input))
                 .setHeaders(Collections.singletonMap("X-Powered-By", "AWS Lambda & serverless"))
                 .setStatusCode(500).build();
+    }
+
+    private void buildResponse() {
+        try {
+            LOG.info("Obtendo dados no dynamoDB com serviço de livro!");
+            this.livros = this.livroService.obterTodosOsLivros();
+            convertListLivrosToJson();
+            responseWithSuccess();
+        } catch (RuntimeException e) {
+            LOG.error("Ocorreu um erro ao obter os dados no dynamoDB");
+            responseWithError(e);
+        }
     }
 }
