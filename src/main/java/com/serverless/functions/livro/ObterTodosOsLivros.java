@@ -54,5 +54,10 @@ public class ObterTodosOsLivros implements RequestHandler<Map<String, Object>, A
         }
     }
 
-
+    private void responseWithSuccess() {
+        this.response = ApiGatewayResponse.builder()
+                .setObjectBody(new Response(this.message, this.input))
+                .setHeaders(Collections.singletonMap("X-Powered-By", "AWS Lambda & serverless"))
+                .setStatusCode(200).build();
+    }
 }
