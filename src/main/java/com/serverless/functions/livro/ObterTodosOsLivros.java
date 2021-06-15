@@ -44,5 +44,15 @@ public class ObterTodosOsLivros implements RequestHandler<Map<String, Object>, A
         return this.response;
     }
 
+    private void convertListLivrosToJson() {
+        LOG.info("Converter objetos para JSON");
+        try {
+            this.message = objectMapper.writeValueAsString(this.livros);
+        } catch (JsonProcessingException e) {
+            LOG.error("Erro ao converter o objeto para JSON");
+            e.printStackTrace();
+        }
+    }
+
 
 }
