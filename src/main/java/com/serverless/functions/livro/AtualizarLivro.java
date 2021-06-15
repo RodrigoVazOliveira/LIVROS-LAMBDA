@@ -64,6 +64,7 @@ public class AtualizarLivro implements RequestHandler<Map<String, Object>, ApiGa
     }
 
     private ApiGatewayResponse buildResponseError(RuntimeException e) {
+        LOG.info("Criando resposta com erro");
         return ApiGatewayResponse.builder()
                 .setObjectBody(new Response(e.getMessage(), this.input))
                 .setHeaders(Collections.singletonMap("X-Powered-By", "AWS Lambda & serverless"))
@@ -71,6 +72,7 @@ public class AtualizarLivro implements RequestHandler<Map<String, Object>, ApiGa
     }
 
     private ApiGatewayResponse buildResponseSuccess() {
+        LOG.info("Criando resposta com sucesso!");
         return ApiGatewayResponse.builder()
                 .setObjectBody(new Response("Livro atualizado com sucesso!", this.input))
                 .setHeaders(Collections.singletonMap("X-Powered-By", "AWS Lambda & serverless"))
