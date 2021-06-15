@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.serverless.ApiGatewayResponse;
 import com.serverless.Response;
+import com.serverless.functions.livro.ObterTodosOsLivros;
 import com.serverless.models.Livro;
 import com.serverless.services.LivroService;
 import org.junit.jupiter.api.Assertions;
