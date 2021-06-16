@@ -54,7 +54,7 @@ public class TipoDeLivroService {
          }
      }
 
-     private DynamoDBQueryExpression gerarQueryPorId(TipoDeLivro tipoDeLivro) {
+     private DynamoDBQueryExpression<TipoDeLivro> gerarQueryPorId(TipoDeLivro tipoDeLivro) {
          LOG.info("Criando a query de busca!");
          DynamoDBQueryExpression<TipoDeLivro> query = new DynamoDBQueryExpression<>();
          query.withHashKeyValues(tipoDeLivro);
