@@ -8,6 +8,7 @@ import com.serverless.services.GeneroService;
 import org.apache.logging.log4j.Logger;
 import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -30,54 +31,58 @@ public class AtualizarGeneroTest {
 
     @Mock
     private Context context;
+    
+    private Map<String, Object> input;
 
     @InjectMocks
     private AtualizarGenero atualizarGenero;
+    
+    @BeforeEach
+    public void setup() {
+    	this.input = new HashMap<String, Object>();
+    }
+    
 
     @Test
     public void testarAtualizacaoDeGeneroComSucesso() {
         Mockito.lenient().doNothing().when(this.generoService).atualizarGenero(Mockito.any());
+        this.input.put("body", "{\"id\":\"2\", \"nome\":\"Ficção Cientifica\"}");
+        ApiGatewayResponse responseExpect = construirMensagemDeSucesso(); 
+        ApiGatewayResponse responseActual = this.atualizarGenero.handleRequest(this.input, this.context);
 
-        Map<String, Object> input = new HashMap<>();
-        input.put("body", "{\"id\":\"2\", \"nome\":\"Ficção Cientifica\"}");
-
-        ApiGatewayResponse responseEsperada =  ApiGatewayResponse.builder()
-                .setStatusCode(201)
-                .setHeaders(Collections.singletonMap("X-Powered-By", "AWS Lambda & serverless"))
-                .setObjectBody(new Response("Genero com id 2 atualizado com sucesso!", input))
-                .build();
-
-        ApiGatewayResponse respostaTest = this.atualizarGenero.handleRequest(input, this.context);
-
-        Assert.assertEquals(responseEsperada.getStatusCode(), respostaTest.getStatusCode());
-        Assert.assertEquals(responseEsperada.getBody(), respostaTest.getBody());
-        Assert.assertEquals(responseEsperada.getHeaders(), respostaTest.getHeaders());
+        verificarAcertos(responseExpect, responseActual);
     }
 
     @Test
     public void testarAtualizacaoDeGeneroComError() {
         Mockito.doThrow(new RuntimeException("Não foi localziado nenhum genero com id 2"))
                 .when(this.generoService).atualizarGenero(Mockito.any());
+        this.input.put("body", "{\"id\":\"2\", \"nome\":\"Ficção Cientifica\"}");
+        ApiGatewayResponse responseExpect =  construirMensagemDeError();
+        ApiGatewayResponse responseActual = this.atualizarGenero.handleRequest(this.input, this.context);
 
-        Map<String, Object> input = new HashMap<>();
-        input.put("body", "{\"id\":\"2\", \"nome\":\"Ficção Cientifica\"}");
-
-        ApiGatewayResponse responseEsperada =  ApiGatewayResponse.builder()
-                .setStatusCode(400)
-                .setHeaders(Collections.singletonMap("X-Powered-By", "AWS Lambda & serverless"))
-                .setObjectBody(new Response("Não foi localziado nenhum genero com id 2", input))
-                .build();
-
-        ApiGatewayResponse respostaTest = this.atualizarGenero.handleRequest(input, this.context);
-
-        Assert.assertEquals(responseEsperada.getStatusCode(), respostaTest.getStatusCode());
-        Assert.assertEquals(responseEsperada.getBody(), respostaTest.getBody());
-        Assert.assertEquals(responseEsperada.getHeaders(), respostaTest.getHeaders());
+    	verificarAcertos(responseExpect, responseActual);
     }
     
     public void verificarAcertos(ApiGatewayResponse responseExpect, ApiGatewayResponse responseActual) {
         Assertions.assertEquals(responseExpect.getStatusCode(), responseActual.getStatusCode());
         Assertions.assertEquals(responseExpect.getBody(), responseActual.getBody());
         Assertions.assertEquals(responseExpect.getHeaders(), responseActual.getHeaders());
+    }
+    
+    private ApiGatewayResponse construirMensagemDeSucesso() {
+    	return ApiGatewayResponse.builder()
+                .setStatusCode(201)
+                .setHeaders(Collections.singletonMap("X-Powered-By", "AWS Lambda & serverless"))
+                .setObjectBody(new Response("Genero com id 2 atualizado com sucesso!", this.input))
+                .build();
+    }
+    
+    private ApiGatewayResponse construirMensagemDeError() {
+    	return ApiGatewayResponse.builder()
+                .setStatusCode(400)
+                .setHeaders(Collections.singletonMap("X-Powered-By", "AWS Lambda & serverless"))
+                .setObjectBody(new Response("Não foi localziado nenhum genero com id 2", this.input))
+                .build();
     }
 }
