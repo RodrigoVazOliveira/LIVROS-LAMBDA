@@ -6,15 +6,18 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.serverless.ApiGatewayResponse;
 import com.serverless.Response;
 import com.serverless.functions.genero.ObterGenero;
+import com.serverless.helper.ObjectMapperProxy;
 import com.serverless.models.Genero;
 import com.serverless.services.GeneroService;
 import org.apache.logging.log4j.Logger;
 import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
+import static org.mockito.Mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Collections;
@@ -35,31 +38,52 @@ public class ObterTodosGeneroTest {
 
     @InjectMocks
     private ObterGenero obterGenero;
+    
+    @Mock
+    private Iterable<Genero> generos;
+    
+    private Map<String, Object> input;
+    
+    private String mensagemRetorno;
+    
+    private final ObjectMapper objectMapper = ObjectMapperProxy.getObjectMapper();
+    
+    @BeforeEach
+    public void setup() {
+    	this.input = new HashMap<String, Object>();
+    	this.mensagemRetorno = null;
+    	
+    }
 
     @Test
     public void testarObterTodosGenerosComSucesso()  {
-        Iterable<Genero> generos = Mockito.mock(Iterable.class);
-        Mockito.lenient().when(this.generoService.obterTodosGeneros()).thenReturn(generos);
+        lenient().when(this.generoService.obterTodosGeneros()).thenReturn(this.generos);
+    	converterListaDeGenerosParaJson();
+        ApiGatewayResponse responseExpect = construirRespostaComSucesso();
+        ApiGatewayResponse responseActual = this.obterGenero.handleRequest(input, this.context);
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        String mensagem = null;
-        try {
-            mensagem = objectMapper.writeValueAsString(generos);
-        } catch (JsonProcessingException e) {
-            mensagem = e.getMessage();
-        }
-        Map<String, Object> input = new HashMap<>();
-
-        ApiGatewayResponse respostaEsperada =  ApiGatewayResponse.builder()
+    	verificarAcertos(responseExpect, responseActual);
+    }
+    
+    private void converterListaDeGenerosParaJson() {
+    	try {
+			this.mensagemRetorno = this.objectMapper.writeValueAsString(this.generos);
+		} catch (JsonProcessingException e) {
+			this.mensagemRetorno = e.getMessage();
+		}
+    }
+    
+    private void verificarAcertos(ApiGatewayResponse responseExpect, ApiGatewayResponse responseActual) {
+        Assertions.assertEquals(responseExpect.getHeaders(), responseActual.getHeaders());
+        Assertions.assertEquals(responseExpect.getStatusCode(), responseActual.getStatusCode());
+        Assertions.assertEquals(responseExpect.getBody(), responseActual.getBody());
+    }
+    
+    private ApiGatewayResponse construirRespostaComSucesso() {
+    	return ApiGatewayResponse.builder()
                 .setStatusCode(200)
                 .setHeaders(Collections.singletonMap("X-Powered-By", "AWS Lambda & serverless"))
-                .setObjectBody(new Response(mensagem, input))
+                .setObjectBody(new Response(this.mensagemRetorno, this.input))
                 .build();
-
-        ApiGatewayResponse respostaTest = this.obterGenero.handleRequest(input, this.context);
-
-        Assert.assertEquals(respostaEsperada.getHeaders(), respostaTest.getHeaders());
-        Assert.assertEquals(respostaEsperada.getStatusCode(), respostaTest.getStatusCode());
-        Assert.assertEquals(respostaEsperada.getBody(), respostaTest.getBody());
     }
 }
