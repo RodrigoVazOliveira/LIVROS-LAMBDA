@@ -7,6 +7,7 @@ import com.serverless.functions.genero.AtualizarGenero;
 import com.serverless.services.GeneroService;
 import org.apache.logging.log4j.Logger;
 import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -72,5 +73,11 @@ public class AtualizarGeneroTest {
         Assert.assertEquals(responseEsperada.getStatusCode(), respostaTest.getStatusCode());
         Assert.assertEquals(responseEsperada.getBody(), respostaTest.getBody());
         Assert.assertEquals(responseEsperada.getHeaders(), respostaTest.getHeaders());
+    }
+    
+    public void verificarAcertos(ApiGatewayResponse responseExpect, ApiGatewayResponse responseActual) {
+        Assertions.assertEquals(responseExpect.getStatusCode(), responseActual.getStatusCode());
+        Assertions.assertEquals(responseExpect.getBody(), responseActual.getBody());
+        Assertions.assertEquals(responseExpect.getHeaders(), responseActual.getHeaders());
     }
 }
