@@ -1,10 +1,13 @@
 package com.serverless.tests.functions.tipodelivro;
 
-import com.amazonaws.services.lambda.runtime.Context;
-import com.serverless.ApiGatewayResponse;
-import com.serverless.Response;
-import com.serverless.functions.tipodelivro.DeleteTipoDeLivro;
-import com.serverless.services.TipoDeLivroService;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
+
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,11 +16,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-
-import static org.mockito.Mockito.*;
+import com.amazonaws.services.lambda.runtime.Context;
+import com.serverless.ApiGatewayResponse;
+import com.serverless.Response;
+import com.serverless.functions.tipodelivro.DeleteTipoDeLivro;
+import com.serverless.services.TipoDeLivroService;
 
 @ExtendWith(MockitoExtension.class)
 public class DeleteTipoDeLivroTest {
