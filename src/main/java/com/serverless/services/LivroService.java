@@ -78,4 +78,9 @@ public class LivroService {
         livroAtual.setGenero(livro.getGenero());
         livroAtual.setTipoDeLivro(livro.getTipoDeLivro());
     }
+
+	public void deletaLivro(Livro livro) {
+		Livro deleteLivro = buscarLivroPeloId(livro.getId());
+		this.dynamoDBMapper.delete(deleteLivro);
+	}
 }
