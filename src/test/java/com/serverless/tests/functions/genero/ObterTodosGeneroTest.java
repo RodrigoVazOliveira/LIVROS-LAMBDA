@@ -1,5 +1,20 @@
 package com.serverless.tests.functions.genero;
 
+import static org.mockito.Mockito.lenient;
+
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.apache.logging.log4j.Logger;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
 import com.amazonaws.services.lambda.runtime.Context;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -9,20 +24,6 @@ import com.serverless.functions.genero.ObterGenero;
 import com.serverless.helper.ObjectMapperProxy;
 import com.serverless.models.Genero;
 import com.serverless.services.GeneroService;
-import org.apache.logging.log4j.Logger;
-import org.junit.Assert;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import static org.mockito.Mockito.*;
-import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 @ExtendWith(MockitoExtension.class)
 public class ObterTodosGeneroTest {
