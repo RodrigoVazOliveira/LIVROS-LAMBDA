@@ -28,8 +28,6 @@ public class TipoDeLivroServiceTest {
 
     private PaginatedScanList<TipoDeLivro> tipoDeLivros;
 
-    private PaginatedScanList<TipoDeLivro> tipoDeLivrosError;
-
     private PaginatedQueryList<TipoDeLivro> tipoDeLivrosQuery;
 
     private PaginatedQueryList<TipoDeLivro> tipoDeLivrosQueryError;
@@ -56,7 +54,7 @@ public class TipoDeLivroServiceTest {
                 withSettings().defaultAnswer(new ForwardsInvocations(listaTipoDeLivros)));
 
         List<TipoDeLivro> listaComError = new ArrayList<>();
-        this.tipoDeLivrosError = mock(PaginatedScanList.class,
+        mock(PaginatedScanList.class,
                 withSettings().defaultAnswer(new ForwardsInvocations(listaComError)));
 
         this.tipoDeLivrosQueryError = mock(PaginatedQueryList.class,
