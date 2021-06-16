@@ -16,6 +16,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.serverless.ApiGatewayResponse;
 import com.serverless.Response;
+import com.serverless.functions.livro.DeleteLivro;
 import com.serverless.models.Livro;
 import com.serverless.services.LivroService;
 
