@@ -6,6 +6,7 @@ import com.serverless.Response;
 import com.serverless.functions.genero.DeleteGenero;
 import com.serverless.services.GeneroService;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -30,38 +31,53 @@ public class DeleteGeneroTest {
     @InjectMocks
     private DeleteGenero deleteGenero;
 
+    private Map<String, Object> input;
+    
+    @BeforeEach
+    public void setup() {
+    	this.input = new HashMap<String, Object>();
+    }
+    
     @Test
     public void testarDeleteGeneroComSucesso() {
         doNothing().when(this.generoService).deletarGenero(anyString());
-        Map<String, Object> input = new HashMap<>();
-        input.put("body", "{\"id\":\"4242\"}");
-        ApiGatewayResponse respostaEsperada = ApiGatewayResponse.builder()
-                .setHeaders(Collections.singletonMap("X-Powered-By", "AWS Lambda & serverless"))
-                .setObjectBody(new Response("O genero com id 4242 foi excluido!", input))
-                .setStatusCode(204)
-                .build();
-        ApiGatewayResponse respostaTest = this.deleteGenero.handleRequest(input, this.context);
+        this.input.put("body", "{\"id\":\"4242\"}");
+        ApiGatewayResponse responseExpect = construirRespostaComSucesso();
+        ApiGatewayResponse responseActual = this.deleteGenero.handleRequest(this.input, this.context);
 
-        Assertions.assertEquals(respostaEsperada.getStatusCode(), respostaTest.getStatusCode());
-        Assertions.assertEquals(respostaEsperada.getBody(), respostaTest.getBody());
-        Assertions.assertEquals(respostaEsperada.getHeaders(), respostaTest.getHeaders());
+        verificarAcertos(responseExpect, responseActual);
     }
 
     @Test
     public void testarDeleteGeneroComErro() {
         doThrow(new RuntimeException("Não foi localziado nenhum genero com id 1"))
                 .when(this.generoService).deletarGenero(anyString());
-        Map<String, Object> input = new HashMap<>();
-        input.put("body", "{\"id\":\"4242\"}");
-        ApiGatewayResponse respostaEsperada = ApiGatewayResponse.builder()
+        this.input.put("body", "{\"id\":\"4242\"}");
+        ApiGatewayResponse responseExpect = construirRespostaComErro();
+        ApiGatewayResponse responseActual = this.deleteGenero.handleRequest(this.input, this.context);
+
+        verificarAcertos(responseExpect, responseActual);
+    }
+    
+    private void verificarAcertos(ApiGatewayResponse responseExpect, ApiGatewayResponse responseActual) {
+        Assertions.assertEquals(responseExpect.getStatusCode(), responseActual.getStatusCode());
+        Assertions.assertEquals(responseExpect.getBody(), responseActual.getBody());
+        Assertions.assertEquals(responseExpect.getHeaders(), responseActual.getHeaders());
+    }
+    
+    private ApiGatewayResponse construirRespostaComSucesso() {
+    	return ApiGatewayResponse.builder()
                 .setHeaders(Collections.singletonMap("X-Powered-By", "AWS Lambda & serverless"))
-                .setObjectBody(new Response("Não foi localziado nenhum genero com id 1", input))
+                .setObjectBody(new Response("O genero com id 4242 foi excluido!", this.input))
+                .setStatusCode(204)
+                .build();
+    }
+    
+    private ApiGatewayResponse construirRespostaComErro() {
+    	return ApiGatewayResponse.builder()
+                .setHeaders(Collections.singletonMap("X-Powered-By", "AWS Lambda & serverless"))
+                .setObjectBody(new Response("Não foi localziado nenhum genero com id 1", this.input))
                 .setStatusCode(400)
                 .build();
-        ApiGatewayResponse respostaTest = this.deleteGenero.handleRequest(input, this.context);
-
-        Assertions.assertEquals(respostaEsperada.getStatusCode(), respostaTest.getStatusCode());
-        Assertions.assertEquals(respostaEsperada.getBody(), respostaTest.getBody());
-        Assertions.assertEquals(respostaEsperada.getHeaders(), respostaTest.getHeaders());
     }
 }
