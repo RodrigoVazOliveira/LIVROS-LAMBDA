@@ -42,16 +42,10 @@ public class DeleteTipoDeLivroTest {
     public void testarDeleteTipoDeLivroComSucesso() {
         doNothing().when(this.tipoDeLivroService).deleteTipoDeLivro(anyString());
         this.input.put("body", "{\"id\": \"1\"}");
-        ApiGatewayResponse respostaTest = this.deleteTipoDeLivro.handleRequest(this.input, this.context);
-        ApiGatewayResponse respostaEsperada = ApiGatewayResponse.builder()
-                .setObjectBody(new Response("tipo de livro deletado!", this.input))
-                .setStatusCode(204)
-                .setHeaders(Collections.singletonMap("X-Powered-By", "AWS Lambda & serverless"))
-                .build();
+        ApiGatewayResponse responseActual = this.deleteTipoDeLivro.handleRequest(this.input, this.context);
+        ApiGatewayResponse responseExpect = construirRespostaComSucesso();
 
-        Assertions.assertEquals(respostaEsperada.getStatusCode(), respostaTest.getStatusCode());
-        Assertions.assertEquals(respostaEsperada.getBody(), respostaTest.getBody());
-        Assertions.assertEquals(respostaEsperada.getHeaders(), respostaTest.getHeaders());
+    	verificarAcertos(responseExpect, responseActual);
     }
 
     @Test
@@ -59,15 +53,31 @@ public class DeleteTipoDeLivroTest {
         doThrow(new RuntimeException("não existe um tipo de livro com id 1"))
                 .when(this.tipoDeLivroService).deleteTipoDeLivro(anyString());
         this.input.put("body", "{\"id\": \"1\"}");
-        ApiGatewayResponse respostaTest = this.deleteTipoDeLivro.handleRequest(this.input, this.context);
-        ApiGatewayResponse respostaEsperada = ApiGatewayResponse.builder()
+        ApiGatewayResponse responseActual = this.deleteTipoDeLivro.handleRequest(this.input, this.context);
+        ApiGatewayResponse responseExpect = construirRepostaComError();
+
+        verificarAcertos(responseExpect, responseActual);
+    }
+    
+    private void verificarAcertos(ApiGatewayResponse responseExpect, ApiGatewayResponse responseActual) {
+        Assertions.assertEquals(responseExpect.getStatusCode(), responseActual.getStatusCode());
+        Assertions.assertEquals(responseExpect.getBody(), responseActual.getBody());
+        Assertions.assertEquals(responseExpect.getHeaders(), responseActual.getHeaders());
+    }
+    
+    private ApiGatewayResponse construirRespostaComSucesso() {
+    	return ApiGatewayResponse.builder()
+                .setObjectBody(new Response("tipo de livro deletado!", this.input))
+                .setStatusCode(204)
+                .setHeaders(Collections.singletonMap("X-Powered-By", "AWS Lambda & serverless"))
+                .build();
+    }
+    
+    private ApiGatewayResponse construirRepostaComError() {
+    	return ApiGatewayResponse.builder()
                 .setObjectBody(new Response("não existe um tipo de livro com id 1", this.input))
                 .setStatusCode(400)
                 .setHeaders(Collections.singletonMap("X-Powered-By", "AWS Lambda & serverless"))
                 .build();
-
-        Assertions.assertEquals(respostaEsperada.getStatusCode(), respostaTest.getStatusCode());
-        Assertions.assertEquals(respostaEsperada.getBody(), respostaTest.getBody());
-        Assertions.assertEquals(respostaEsperada.getHeaders(), respostaTest.getHeaders());
     }
 }
