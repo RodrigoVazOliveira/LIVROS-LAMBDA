@@ -27,10 +27,6 @@ public class DeleteLivro implements RequestHandler<Map<String, Object>, ApiGatew
 		this.livroService = new LivroService();
 	}
 
-	public DeleteLivro(LivroService livroService) {
-		this.livroService = livroService;
-	}
-
 	@Override
 	public ApiGatewayResponse handleRequest(Map<String, Object> input, Context context) {
 		LOG.info("Iniciando processo de deletar o livro pelo id!");

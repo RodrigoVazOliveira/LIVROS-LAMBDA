@@ -25,10 +25,6 @@ public class ObterGenero implements RequestHandler<Map<String, Object>, ApiGatew
         this.generoService = new GeneroService();
     }
 
-    public ObterGenero(GeneroService generoService) {
-        this.generoService = generoService;
-    }
-
     @Override
     public ApiGatewayResponse handleRequest(Map<String, Object> input, Context context) {
         LOG.info("Iniciar processo para gerar lista de generos!");

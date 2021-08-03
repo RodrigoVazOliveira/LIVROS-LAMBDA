@@ -25,10 +25,6 @@ public class AtualizarGenero implements RequestHandler<Map<String, Object>, ApiG
         this.generoService = new GeneroService();
     }
 
-    public AtualizarGenero(GeneroService generoService) {
-        this.generoService = generoService;
-    }
-
     @Override
     public ApiGatewayResponse handleRequest(Map<String, Object> input, Context context) {
         LOG.info("Capturando as informações enviadas.");

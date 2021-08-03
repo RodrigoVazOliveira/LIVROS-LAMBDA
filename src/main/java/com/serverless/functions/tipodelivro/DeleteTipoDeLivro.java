@@ -25,10 +25,6 @@ public class DeleteTipoDeLivro implements RequestHandler<Map<String, Object>, Ap
         this.tipoDeLivroService = new TipoDeLivroService();
     }
 
-    public DeleteTipoDeLivro(TipoDeLivroService tipoDeLivroService) {
-        this.tipoDeLivroService = tipoDeLivroService;
-    }
-
     @Override
     public ApiGatewayResponse handleRequest(Map<String, Object> input, Context context) {
         this.input = input;

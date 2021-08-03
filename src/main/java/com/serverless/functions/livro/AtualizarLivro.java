@@ -29,10 +29,6 @@ public class AtualizarLivro implements RequestHandler<Map<String, Object>, ApiGa
         this.livroService = new LivroService();
     }
 
-    public AtualizarLivro(LivroService livroService) {
-        this.livroService = livroService;
-    }
-
     @Override
     public ApiGatewayResponse handleRequest(Map<String, Object> input, Context context) {
         LOG.info("Inciiar processo para atualizar o livro");

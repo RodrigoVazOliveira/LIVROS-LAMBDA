@@ -30,10 +30,6 @@ public class ObterTodosOsLivros implements RequestHandler<Map<String, Object>, A
         this.livroService = new LivroService();
     }
 
-    public ObterTodosOsLivros(LivroService livroService) {
-        this.livroService = livroService;
-    }
-
     @Override
     public ApiGatewayResponse handleRequest(Map<String, Object> input, Context context) {
         LOG.info("Iniciando processo para obter os livros do dynamoDB");

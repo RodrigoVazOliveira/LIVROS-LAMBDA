@@ -26,10 +26,6 @@ public class AtualizarTipoDeLivro implements RequestHandler<Map<String, Object>,
         this.tipoDeLivroService = new TipoDeLivroService();
     }
 
-    public AtualizarTipoDeLivro(TipoDeLivroService tipoDeLivroService) {
-        this.tipoDeLivroService = tipoDeLivroService;
-    }
-
     @Override
     public ApiGatewayResponse handleRequest(Map<String, Object> input, Context context) {
         LOG.info("Inciiando o funcionamento do lambda para atualizar");

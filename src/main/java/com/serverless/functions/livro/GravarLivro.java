@@ -29,10 +29,6 @@ public class GravarLivro implements RequestHandler<Map<String, Object>, ApiGatew
         this.livroService = new LivroService();
     }
 
-    public GravarLivro(LivroService livroService) {
-        this.livroService = livroService;
-    }
-
     @Override
     public ApiGatewayResponse handleRequest(Map<String, Object> input, Context context) {
         LOG.info("Iniciando processo de gravação do livro");

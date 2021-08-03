@@ -25,10 +25,6 @@ public class CadastrarTipoDeLivro implements RequestHandler<Map<String, Object>,
         this.tipoDeLivroService = new TipoDeLivroService();
     }
 
-    public CadastrarTipoDeLivro(TipoDeLivroService tipoDeLivroService) {
-        this.tipoDeLivroService = tipoDeLivroService;
-    }
-
     @Override
     public ApiGatewayResponse handleRequest(Map<String, Object> input, Context context) {
         LOG.info("Inicio de gravação dos dados do tipo de livro");

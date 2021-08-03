@@ -23,10 +23,6 @@ public class GravarGenero implements RequestHandler<Map<String, Object>, ApiGate
         this.generoService = new GeneroService();
     }
 
-    public GravarGenero(GeneroService generoService) {
-        this.generoService = generoService;
-    }
-
     @Override
     public ApiGatewayResponse handleRequest(Map<String, Object> input, Context context) {
         LOG.info("Gravando o novo genero no dynamoDB");

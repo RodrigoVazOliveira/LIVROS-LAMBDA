@@ -24,10 +24,6 @@ public class DeleteGenero implements RequestHandler<Map<String, Object>, ApiGate
         this.generoService = new GeneroService();
     }
 
-    public DeleteGenero(GeneroService generoService) {
-        this.generoService = generoService;
-    }
-
     @Override
     public ApiGatewayResponse handleRequest(Map<String, Object> input, Context context) {
         LOG.info("Inciar o processo para deletar o genero!");

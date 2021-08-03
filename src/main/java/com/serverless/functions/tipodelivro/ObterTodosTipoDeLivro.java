@@ -22,10 +22,6 @@ public class ObterTodosTipoDeLivro implements RequestHandler<Map<String, Object>
         this.tipoDeLivroService = new TipoDeLivroService();
     }
 
-    public ObterTodosTipoDeLivro(TipoDeLivroService tipoDeLivroService) {
-        this.tipoDeLivroService = tipoDeLivroService;
-    }
-
     @Override
     public ApiGatewayResponse handleRequest(Map<String, Object> input, Context context) {
         LOG.info("Iniciar processo para obter todos os tipo de livros");
