@@ -1,10 +1,9 @@
 package com.serverless.tests.functions.genero;
 
-import com.amazonaws.services.lambda.runtime.Context;
-import com.serverless.ApiGatewayResponse;
-import com.serverless.Response;
-import com.serverless.functions.genero.GravarGenero;
-import com.serverless.services.GeneroService;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,9 +14,11 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import com.amazonaws.services.lambda.runtime.Context;
+import com.serverless.ApiGatewayResponse;
+import com.serverless.Response;
+import com.serverless.functions.genero.GravarGenero;
+import com.serverless.services.GeneroService;
 
 @ExtendWith(MockitoExtension.class)
 public class GravarGeneroTest {
@@ -39,6 +40,8 @@ public class GravarGeneroTest {
     @BeforeEach
     public void setup() {
     	this.input = new HashMap<String, Object>();
+    	this.gravarGenero = new GravarGenero();
+    	this.gravarGenero.setGeneroService(this.generoService);
     }
 
     @Test

@@ -1,23 +1,25 @@
 package com.serverless.tests.functions.genero;
 
-import com.amazonaws.services.lambda.runtime.Context;
-import com.serverless.ApiGatewayResponse;
-import com.serverless.Response;
-import com.serverless.functions.genero.DeleteGenero;
-import com.serverless.services.GeneroService;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.mockito.Mockito.*;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import com.amazonaws.services.lambda.runtime.Context;
+import com.serverless.ApiGatewayResponse;
+import com.serverless.Response;
+import com.serverless.functions.genero.DeleteGenero;
+import com.serverless.services.GeneroService;
 
 @ExtendWith(MockitoExtension.class)
 public class DeleteGeneroTest {
@@ -28,7 +30,6 @@ public class DeleteGeneroTest {
     @Mock
     private Context context;
 
-    @InjectMocks
     private DeleteGenero deleteGenero;
 
     private Map<String, Object> input;
@@ -36,6 +37,8 @@ public class DeleteGeneroTest {
     @BeforeEach
     public void setup() {
     	this.input = new HashMap<String, Object>();
+    	this.deleteGenero = new DeleteGenero();
+    	this.deleteGenero.setGeneroService(this.generoService);
     }
     
     @Test

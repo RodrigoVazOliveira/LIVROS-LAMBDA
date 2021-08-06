@@ -1,17 +1,19 @@
 package com.serverless.functions.genero;
 
+import java.util.Collections;
+import java.util.Map;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.serverless.ApiGatewayResponse;
 import com.serverless.Response;
+import com.serverless.functions.genero.helper.GeneroServiceInstance;
 import com.serverless.helper.GetInput;
 import com.serverless.services.GeneroService;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import java.util.Collections;
-import java.util.Map;
 
 public class DeleteGenero implements RequestHandler<Map<String, Object>, ApiGatewayResponse> {
 
@@ -20,16 +22,12 @@ public class DeleteGenero implements RequestHandler<Map<String, Object>, ApiGate
     private String id;
     private Map<String, Object> input;
 
-    public DeleteGenero() {
-        this.generoService = new GeneroService();
-    }
-
     @Override
     public ApiGatewayResponse handleRequest(Map<String, Object> input, Context context) {
         LOG.info("Inciar o processo para deletar o genero!");
         this.input = input;
         getData();
-
+        this.generoService = GeneroServiceInstance.getInstance(this.generoService);
         return deletarGenero();
     }
 
@@ -63,4 +61,8 @@ public class DeleteGenero implements RequestHandler<Map<String, Object>, ApiGate
         JsonNode body = GetInput.getBody(this.input);
         this.id = body.get("id").asText();
     }
+
+	public void setGeneroService(GeneroService generoService) {
+		this.generoService = generoService;
+	}
 }
