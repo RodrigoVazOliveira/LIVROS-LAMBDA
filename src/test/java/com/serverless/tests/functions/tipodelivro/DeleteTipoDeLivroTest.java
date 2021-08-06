@@ -1,5 +1,7 @@
 package com.serverless.tests.functions.tipodelivro;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
@@ -8,7 +10,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -39,6 +40,8 @@ public class DeleteTipoDeLivroTest {
     @BeforeEach
     public void setup() {
         this.input = new HashMap<>();
+        this.deleteTipoDeLivro = new DeleteTipoDeLivro();
+        this.deleteTipoDeLivro.setTipoDeLivroService(this.tipoDeLivroService);
     }
 
     @Test
@@ -63,9 +66,9 @@ public class DeleteTipoDeLivroTest {
     }
     
     private void verificarAcertos(ApiGatewayResponse responseExpect, ApiGatewayResponse responseActual) {
-        Assertions.assertEquals(responseExpect.getStatusCode(), responseActual.getStatusCode());
-        Assertions.assertEquals(responseExpect.getBody(), responseActual.getBody());
-        Assertions.assertEquals(responseExpect.getHeaders(), responseActual.getHeaders());
+        assertThat(responseActual.getStatusCode(), is(responseExpect.getStatusCode()));
+        assertThat(responseActual.getBody(), is(responseExpect.getBody()));
+        assertThat(responseActual.getHeaders(), is(responseExpect.getHeaders()));
     }
     
     private ApiGatewayResponse construirRespostaComSucesso() {

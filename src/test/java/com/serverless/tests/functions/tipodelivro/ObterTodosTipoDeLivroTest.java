@@ -1,5 +1,7 @@
 package com.serverless.tests.functions.tipodelivro;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -8,11 +10,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -35,7 +35,6 @@ public class ObterTodosTipoDeLivroTest {
     @Mock
     private Context context;
 
-    @InjectMocks
     private ObterTodosTipoDeLivro obterTodosTipoDeLivro;
 
     private Iterable<TipoDeLivro> tipoDeLivros;
@@ -56,6 +55,9 @@ public class ObterTodosTipoDeLivroTest {
         this.tipoDeLivros = tipoDeLivrosList;
         
         this.mensagemRetorno = null;
+        
+        this.obterTodosTipoDeLivro = new ObterTodosTipoDeLivro();
+        this.obterTodosTipoDeLivro.setTipoDeLivroService(this.tipoDeLivroService);
     }
 
     @Test
@@ -85,8 +87,8 @@ public class ObterTodosTipoDeLivroTest {
     }
     
     private void verificarAcertos(ApiGatewayResponse responseExpect, ApiGatewayResponse responseActual) {
-        Assertions.assertEquals(responseExpect.getStatusCode(), responseActual.getStatusCode());
-        Assertions.assertEquals(responseExpect.getBody(), responseActual.getBody());
-        Assertions.assertEquals(responseExpect.getHeaders(), responseActual.getHeaders());
+        assertThat(responseActual.getStatusCode(), is(responseExpect.getStatusCode()));
+        assertThat(responseActual.getBody(), is(responseExpect.getBody()));
+        assertThat(responseActual.getHeaders(), is(responseExpect.getHeaders()));
     }
 }

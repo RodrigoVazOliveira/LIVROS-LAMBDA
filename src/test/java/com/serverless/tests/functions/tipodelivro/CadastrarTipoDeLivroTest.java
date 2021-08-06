@@ -1,13 +1,15 @@
 package com.serverless.tests.functions.tipodelivro;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -30,8 +32,13 @@ public class CadastrarTipoDeLivroTest {
     @Mock
     private Context context;
 
-    @InjectMocks
     private CadastrarTipoDeLivro cadastrarTipoDeLivro;
+    
+    @BeforeEach
+    public void iniciar() {
+    	this.cadastrarTipoDeLivro = new CadastrarTipoDeLivro();
+    	this.cadastrarTipoDeLivro.setTipoDeLivroService(this.tipoDeLivroService);
+    }
 
     @Test
     public void testarCadastroDeTipoDeLivroComSucesso() {
@@ -47,8 +54,8 @@ public class CadastrarTipoDeLivroTest {
                 .build();
         ApiGatewayResponse respostaTest =  this.cadastrarTipoDeLivro.handleRequest(input, this.context);
 
-        Assertions.assertEquals(respostaEsperada.getStatusCode(), respostaTest.getStatusCode());
-        Assertions.assertEquals(respostaEsperada.getBody(), respostaTest.getBody());
-        Assertions.assertEquals(respostaEsperada.getHeaders(), respostaTest.getHeaders());
+        assertThat(respostaTest.getStatusCode(), is(respostaEsperada.getStatusCode()));
+        assertThat(respostaTest.getBody(), is(respostaEsperada.getBody()));
+        assertThat(respostaTest.getHeaders(), is(respostaEsperada.getHeaders()));
     }
 }
