@@ -1,19 +1,20 @@
 package com.serverless.services;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
 import com.serverless.configurations.DynamoDBConfiguration;
 import com.serverless.models.Livro;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class LivroService {
 
-    private DynamoDBMapper dynamoDBMapper = DynamoDBConfiguration.build();
+    private DynamoDBMapper dynamoDBMapper;
     private static final Logger LOG = LogManager.getLogger(LivroService.class);
 
     public LivroService() {
@@ -23,17 +24,26 @@ public class LivroService {
         this.dynamoDBMapper = dynamoDBMapper;
     }
 
+    private void instanciarDynamoDB() {
+    	if (this.dynamoDBMapper == null) {
+    		this.dynamoDBMapper = DynamoDBConfiguration.build();
+    	}
+    }
+    
     public void gravarNovoLivro(Livro livro) {
+    	instanciarDynamoDB();
         this.dynamoDBMapper.save(livro);
     }
 
     public List<Livro> obterTodosOsLivros() throws RuntimeException {
+    	instanciarDynamoDB();
         LOG.info("Acessando o dynamoDB");
         return this.dynamoDBMapper.scan(Livro.class, new DynamoDBScanExpression())
                 .stream().collect(Collectors.toList());
     }
 
     public Livro buscarLivroPeloId(String id) {
+    	instanciarDynamoDB();
         LOG.info("Efetuando busca no dynamoDB");
         List<Livro> livros = this.dynamoDBMapper.query(Livro.class, criarQuery(id))
                 .stream().collect(Collectors.toList());

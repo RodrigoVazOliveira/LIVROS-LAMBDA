@@ -1,8 +1,16 @@
 package com.serverless.tests.services;
 
-import com.amazonaws.services.dynamodbv2.datamodeling.*;
-import com.serverless.models.TipoDeLivro;
-import com.serverless.services.TipoDeLivroService;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.withSettings;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,10 +20,13 @@ import org.mockito.Mock;
 import org.mockito.internal.stubbing.defaultanswers.ForwardsInvocations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.mockito.Mockito.*;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
+import com.amazonaws.services.dynamodbv2.datamodeling.PaginatedQueryList;
+import com.amazonaws.services.dynamodbv2.datamodeling.PaginatedScanList;
+import com.serverless.models.TipoDeLivro;
+import com.serverless.services.TipoDeLivroService;
 
 @ExtendWith(MockitoExtension.class)
 public class TipoDeLivroServiceTest {

@@ -1,19 +1,20 @@
 package com.serverless.services;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
 import com.serverless.configurations.DynamoDBConfiguration;
 import com.serverless.models.Genero;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class GeneroService {
 
-    private DynamoDBMapper dynamoDBMapper = DynamoDBConfiguration.build();
+    private DynamoDBMapper dynamoDBMapper;
     private static final Logger LOG = LogManager.getLogger(GeneroService.class);
 
     public GeneroService() {
@@ -22,22 +23,31 @@ public class GeneroService {
     public GeneroService(DynamoDBMapper dynamoDBMapper) {
         this.dynamoDBMapper = dynamoDBMapper;
     }
+    
+    private void instanciarDynamoDB() {
+    	if (this.dynamoDBMapper == null) {
+            this.dynamoDBMapper = DynamoDBConfiguration.build();
+    	}
+    }
 
     public void cadastrarNovoGeneroDeLivro(String nome) {
         LOG.info("Gerando o uma novo objeto genero");
+        instanciarDynamoDB();
         Genero genero = new Genero();
         genero.setNome(nome);
-        LOG.info("Persistindo o dado no dynamoDB na tabela genero");
+        LOG.info("Persistindo o dado no dynamoDB	  na tabela genero");
         this.dynamoDBMapper.save(genero);
     }
 
     public Iterable<Genero> obterTodosGeneros() {
         LOG.info("Gerando a lista com todos generos cadastrados com dynamoDB");
+        instanciarDynamoDB();
         return this.dynamoDBMapper.scan(Genero.class, new DynamoDBScanExpression()).stream().collect(Collectors.toList());
     }
 
     public Genero buscarGeneroPorId(String id) {
         LOG.info("Gerando o map para fazer a consulta");
+        instanciarDynamoDB();
         Genero genero = new Genero();
         genero.setId(id);
         DynamoDBQueryExpression<Genero> query = new DynamoDBQueryExpression<>();
