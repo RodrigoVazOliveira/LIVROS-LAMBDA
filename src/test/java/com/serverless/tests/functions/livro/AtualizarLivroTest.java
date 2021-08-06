@@ -1,5 +1,23 @@
 package com.serverless.tests.functions.livro;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
+
+import java.time.Year;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
 import com.amazonaws.services.lambda.runtime.Context;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -11,30 +29,12 @@ import com.serverless.models.Genero;
 import com.serverless.models.Livro;
 import com.serverless.models.TipoDeLivro;
 import com.serverless.services.LivroService;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.time.Year;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-
-import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.doNothing;
 
 @ExtendWith(MockitoExtension.class)
 public class AtualizarLivroTest {
 
     @Mock
-    private LivroService tiLivroService;
+    private LivroService livroService;
 
     @Mock
     private Context context;
@@ -47,7 +47,6 @@ public class AtualizarLivroTest {
 
     private Livro livro;
 
-    @InjectMocks
     private AtualizarLivro atualizarLivro;
 
     @BeforeEach
@@ -66,11 +65,14 @@ public class AtualizarLivroTest {
 
         this.livro.setTipoDeLivro(Arrays.asList(tipoDeLivro));
         this.livro.setGenero(genero);
+        
+        this.atualizarLivro = new AtualizarLivro();
+        this.atualizarLivro.setLivroService(this.livroService);
     }
 
     @Test
     public void testarHandleRequestWithSuccess() {
-        doNothing().when(this.tiLivroService).atualizarLivro(any(Livro.class));
+        doNothing().when(this.livroService).atualizarLivro(any(Livro.class));
         converterLivroParaJson();
         ApiGatewayResponse responseExpect = builderResponseSuccess();
         ApiGatewayResponse responseActual = this.atualizarLivro.handleRequest(this.input, this.context);

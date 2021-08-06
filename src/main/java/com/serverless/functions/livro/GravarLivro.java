@@ -1,20 +1,22 @@
 package com.serverless.functions.livro;
 
+import java.util.Collections;
+import java.util.Map;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.serverless.ApiGatewayResponse;
 import com.serverless.Response;
+import com.serverless.functions.livro.helper.LivroServiceInstance;
 import com.serverless.helper.GetInput;
 import com.serverless.helper.ObjectMapperProxy;
 import com.serverless.models.Livro;
 import com.serverless.services.LivroService;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import java.util.Collections;
-import java.util.Map;
 
 public class GravarLivro implements RequestHandler<Map<String, Object>, ApiGatewayResponse> {
 
@@ -25,14 +27,11 @@ public class GravarLivro implements RequestHandler<Map<String, Object>, ApiGatew
     private ApiGatewayResponse response;
     private final ObjectMapper objectMapper = ObjectMapperProxy.getObjectMapper();
 
-    public GravarLivro() {
-        this.livroService = new LivroService();
-    }
-
     @Override
     public ApiGatewayResponse handleRequest(Map<String, Object> input, Context context) {
         LOG.info("Iniciando processo de gravação do livro");
         this.input = input;
+		this.livroService = LivroServiceInstance.getInstance(this.livroService);
         getData();
         gravarNovoLivroNoDynamoDB();
         return this.response;
@@ -77,4 +76,8 @@ public class GravarLivro implements RequestHandler<Map<String, Object>, ApiGatew
                 .setObjectBody(new Response(e.getMessage(), this.input))
                 .setStatusCode(500).build();
     }
+
+	public void setLivroService(LivroService livroService) {
+		this.livroService = livroService;
+	}
 }

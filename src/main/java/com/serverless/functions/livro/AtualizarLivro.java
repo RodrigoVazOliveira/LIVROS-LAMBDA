@@ -1,20 +1,22 @@
 package com.serverless.functions.livro;
 
+import java.util.Collections;
+import java.util.Map;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.serverless.ApiGatewayResponse;
 import com.serverless.Response;
+import com.serverless.functions.livro.helper.LivroServiceInstance;
 import com.serverless.helper.GetInput;
 import com.serverless.helper.ObjectMapperProxy;
 import com.serverless.models.Livro;
 import com.serverless.services.LivroService;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import java.util.Collections;
-import java.util.Map;
 
 public class AtualizarLivro implements RequestHandler<Map<String, Object>, ApiGatewayResponse> {
 
@@ -25,14 +27,11 @@ public class AtualizarLivro implements RequestHandler<Map<String, Object>, ApiGa
     private ApiGatewayResponse response;
     private final ObjectMapper objectMapper = ObjectMapperProxy.getObjectMapper();
 
-    public AtualizarLivro() {
-        this.livroService = new LivroService();
-    }
-
     @Override
     public ApiGatewayResponse handleRequest(Map<String, Object> input, Context context) {
         LOG.info("Inciiar processo para atualizar o livro");
         this.input = input;
+        this.livroService = LivroServiceInstance.getInstance(this.livroService);
         atualizar();
         return this.response;
     }
@@ -74,4 +73,8 @@ public class AtualizarLivro implements RequestHandler<Map<String, Object>, ApiGa
                 .setHeaders(Collections.singletonMap("X-Powered-By", "AWS Lambda & serverless"))
                 .setStatusCode(204).build();
     }
+
+	public void setLivroService(LivroService livroService) {
+		this.livroService = livroService;
+	}
 }

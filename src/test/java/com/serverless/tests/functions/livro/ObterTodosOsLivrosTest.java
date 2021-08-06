@@ -1,5 +1,21 @@
 package com.serverless.tests.functions.livro;
 
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.when;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
 import com.amazonaws.services.lambda.runtime.Context;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -8,18 +24,6 @@ import com.serverless.Response;
 import com.serverless.functions.livro.ObterTodosOsLivros;
 import com.serverless.models.Livro;
 import com.serverless.services.LivroService;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.util.*;
-
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class ObterTodosOsLivrosTest {
@@ -36,7 +40,6 @@ public class ObterTodosOsLivrosTest {
 
     private ObjectMapper objectMapper;
 
-    @InjectMocks
     private ObterTodosOsLivros obterTodosOsLivros;
 
     @BeforeEach
@@ -48,6 +51,9 @@ public class ObterTodosOsLivrosTest {
         this.livros.add(livro);
 
         this.objectMapper = new ObjectMapper();
+        
+        this.obterTodosOsLivros = new ObterTodosOsLivros();
+        this.obterTodosOsLivros.setLivroService(this.livroService);
     }
 
     @Test

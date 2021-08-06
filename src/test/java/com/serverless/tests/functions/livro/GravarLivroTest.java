@@ -1,5 +1,23 @@
 package com.serverless.tests.functions.livro;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.lenient;
+
+import java.time.Year;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
 import com.amazonaws.services.lambda.runtime.Context;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -10,20 +28,6 @@ import com.serverless.models.Genero;
 import com.serverless.models.Livro;
 import com.serverless.models.TipoDeLivro;
 import com.serverless.services.LivroService;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.time.Year;
-import java.util.*;
-
-import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class GravarLivroTest {
@@ -34,7 +38,6 @@ public class GravarLivroTest {
     @Mock
     private Context context;
 
-    @InjectMocks
     private GravarLivro gravarLivro;
 
     private Map<String, Object> input;
@@ -62,6 +65,9 @@ public class GravarLivroTest {
         this.livro.setGenero(genero);
 
         objectMapper = new ObjectMapper();
+        
+        this.gravarLivro = new GravarLivro();
+        this.gravarLivro.setLivroService(this.livroService);
     }
 
     @Test
