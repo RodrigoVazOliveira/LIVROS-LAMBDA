@@ -11,7 +11,6 @@ import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.serverless.ApiGatewayResponse;
 import com.serverless.Response;
-import com.serverless.functions.genero.helper.GeneroServiceInstance;
 import com.serverless.helper.GetInput;
 import com.serverless.services.GeneroService;
 
@@ -21,11 +20,14 @@ public class GravarGenero implements RequestHandler<Map<String, Object>, ApiGate
 	private static final Logger LOG = LogManager.getLogger(GravarGenero.class);
 	private String nome;
 
+	public GravarGenero() {
+		this.generoService = new GeneroService();
+	}
+	
 	@Override
 	public ApiGatewayResponse handleRequest(Map<String, Object> input, Context context) {
 		LOG.info("Gravando o novo genero no dynamoDB");
 		getData(input);
-		this.generoService = GeneroServiceInstance.getInstance(this.generoService);
 		this.generoService.cadastrarNovoGeneroDeLivro(this.nome);
 		LOG.info("Gravação efetuada com sucesso!");
 

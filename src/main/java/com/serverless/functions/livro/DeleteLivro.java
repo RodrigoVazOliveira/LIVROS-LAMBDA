@@ -11,7 +11,6 @@ import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.serverless.ApiGatewayResponse;
 import com.serverless.Response;
-import com.serverless.functions.livro.helper.LivroServiceInstance;
 import com.serverless.helper.GetInput;
 import com.serverless.models.Livro;
 import com.serverless.services.LivroService;
@@ -24,11 +23,14 @@ public class DeleteLivro implements RequestHandler<Map<String, Object>, ApiGatew
 	private Map<String, Object> input;
 	private ApiGatewayResponse response;
 
+	public DeleteLivro() {
+		livroService = new LivroService();
+	}
+	
 	@Override
 	public ApiGatewayResponse handleRequest(Map<String, Object> input, Context context) {
 		LOG.info("Iniciando processo de deletar o livro pelo id!");
 		this.input = input;
-		this.livroService = LivroServiceInstance.getInstance(this.livroService);
 		obterDadosInformado();
 		executarProcessoDeDeletarLivro();
 

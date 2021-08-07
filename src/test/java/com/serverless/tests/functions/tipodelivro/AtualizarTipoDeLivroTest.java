@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -30,12 +31,14 @@ public class AtualizarTipoDeLivroTest {
     @Mock
     private TipoDeLivroService tipoDeLivroService;
 
+    @InjectMocks
     private AtualizarTipoDeLivro atualizarTipoDeLivro;
 
     private Map<String, Object> input;
 
     @Mock
     private Context context;
+
 
     private TipoDeLivro tipoDeLivro;
 
@@ -46,9 +49,6 @@ public class AtualizarTipoDeLivroTest {
         this.tipoDeLivro.setNome("Capa dura");
 
         this.input = new HashMap<>();
-        
-        this.atualizarTipoDeLivro = new AtualizarTipoDeLivro();
-        this.atualizarTipoDeLivro.setTipoDeLivroService(this.tipoDeLivroService);
     }
 
     @Test

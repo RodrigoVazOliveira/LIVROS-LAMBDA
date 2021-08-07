@@ -12,7 +12,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.serverless.ApiGatewayResponse;
 import com.serverless.Response;
-import com.serverless.functions.livro.helper.LivroServiceInstance;
 import com.serverless.helper.GetInput;
 import com.serverless.helper.ObjectMapperProxy;
 import com.serverless.models.Livro;
@@ -27,13 +26,17 @@ public class GravarLivro implements RequestHandler<Map<String, Object>, ApiGatew
     private ApiGatewayResponse response;
     private final ObjectMapper objectMapper = ObjectMapperProxy.getObjectMapper();
 
+    public GravarLivro() {
+    	livroService = new LivroService();
+    }
+    
     @Override
     public ApiGatewayResponse handleRequest(Map<String, Object> input, Context context) {
         LOG.info("Iniciando processo de gravação do livro");
         this.input = input;
-		this.livroService = LivroServiceInstance.getInstance(this.livroService);
         getData();
         gravarNovoLivroNoDynamoDB();
+        
         return this.response;
     }
 

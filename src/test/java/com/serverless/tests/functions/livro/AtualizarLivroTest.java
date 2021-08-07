@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -47,6 +48,7 @@ public class AtualizarLivroTest {
 
     private Livro livro;
 
+    @InjectMocks
     private AtualizarLivro atualizarLivro;
 
     @BeforeEach
@@ -65,9 +67,6 @@ public class AtualizarLivroTest {
 
         this.livro.setTipoDeLivro(Arrays.asList(tipoDeLivro));
         this.livro.setGenero(genero);
-        
-        this.atualizarLivro = new AtualizarLivro();
-        this.atualizarLivro.setLivroService(this.livroService);
     }
 
     @Test

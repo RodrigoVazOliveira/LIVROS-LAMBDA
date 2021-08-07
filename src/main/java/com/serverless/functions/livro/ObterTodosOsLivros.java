@@ -13,7 +13,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.serverless.ApiGatewayResponse;
 import com.serverless.Response;
-import com.serverless.functions.livro.helper.LivroServiceInstance;
 import com.serverless.helper.ObjectMapperProxy;
 import com.serverless.models.Livro;
 import com.serverless.services.LivroService;
@@ -28,12 +27,16 @@ public class ObterTodosOsLivros implements RequestHandler<Map<String, Object>, A
     private ApiGatewayResponse response;
     private Map<String, Object> input;
 
+    public ObterTodosOsLivros() {
+    	livroService = new LivroService();
+    }
+    
     @Override
     public ApiGatewayResponse handleRequest(Map<String, Object> input, Context context) {
         LOG.info("Iniciando processo para obter os livros do dynamoDB");
         this.input = input;
-		this.livroService = LivroServiceInstance.getInstance(this.livroService);
         buildResponse();
+        
         return this.response;
     }
 

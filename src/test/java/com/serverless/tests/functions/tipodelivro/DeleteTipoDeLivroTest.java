@@ -40,8 +40,6 @@ public class DeleteTipoDeLivroTest {
     @BeforeEach
     public void setup() {
         this.input = new HashMap<>();
-        this.deleteTipoDeLivro = new DeleteTipoDeLivro();
-        this.deleteTipoDeLivro.setTipoDeLivroService(this.tipoDeLivroService);
     }
 
     @Test

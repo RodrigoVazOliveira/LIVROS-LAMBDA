@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -30,6 +31,7 @@ public class DeleteGeneroTest {
     @Mock
     private Context context;
 
+    @InjectMocks
     private DeleteGenero deleteGenero;
 
     private Map<String, Object> input;
@@ -37,8 +39,6 @@ public class DeleteGeneroTest {
     @BeforeEach
     public void setup() {
     	this.input = new HashMap<String, Object>();
-    	this.deleteGenero = new DeleteGenero();
-    	this.deleteGenero.setGeneroService(this.generoService);
     }
     
     @Test

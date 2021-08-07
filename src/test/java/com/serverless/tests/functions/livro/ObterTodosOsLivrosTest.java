@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -40,6 +41,7 @@ public class ObterTodosOsLivrosTest {
 
     private ObjectMapper objectMapper;
 
+    @InjectMocks
     private ObterTodosOsLivros obterTodosOsLivros;
 
     @BeforeEach
@@ -51,9 +53,6 @@ public class ObterTodosOsLivrosTest {
         this.livros.add(livro);
 
         this.objectMapper = new ObjectMapper();
-        
-        this.obterTodosOsLivros = new ObterTodosOsLivros();
-        this.obterTodosOsLivros.setLivroService(this.livroService);
     }
 
     @Test

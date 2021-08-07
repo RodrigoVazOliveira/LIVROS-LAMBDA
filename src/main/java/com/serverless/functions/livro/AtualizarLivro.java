@@ -12,7 +12,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.serverless.ApiGatewayResponse;
 import com.serverless.Response;
-import com.serverless.functions.livro.helper.LivroServiceInstance;
 import com.serverless.helper.GetInput;
 import com.serverless.helper.ObjectMapperProxy;
 import com.serverless.models.Livro;
@@ -27,11 +26,14 @@ public class AtualizarLivro implements RequestHandler<Map<String, Object>, ApiGa
     private ApiGatewayResponse response;
     private final ObjectMapper objectMapper = ObjectMapperProxy.getObjectMapper();
 
+    public AtualizarLivro() {
+    	livroService = new LivroService();
+    }
+    
     @Override
     public ApiGatewayResponse handleRequest(Map<String, Object> input, Context context) {
         LOG.info("Inciiar processo para atualizar o livro");
         this.input = input;
-        this.livroService = LivroServiceInstance.getInstance(this.livroService);
         atualizar();
         return this.response;
     }

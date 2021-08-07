@@ -11,7 +11,6 @@ import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.serverless.ApiGatewayResponse;
 import com.serverless.Response;
-import com.serverless.functions.tipodelivro.helper.TipoDeLivroServiceInstance;
 import com.serverless.helper.GetInput;
 import com.serverless.services.TipoDeLivroService;
 
@@ -22,11 +21,14 @@ public class DeleteTipoDeLivro implements RequestHandler<Map<String, Object>, Ap
     private String id;
     private Map<String, Object> input;
     private ApiGatewayResponse response;
+    
+    public DeleteTipoDeLivro() {
+    	tipoDeLivroService = new TipoDeLivroService();
+    }
 
     @Override
     public ApiGatewayResponse handleRequest(Map<String, Object> input, Context context) {
         this.input = input;
-        this.tipoDeLivroService = TipoDeLivroServiceInstance.getInstance(this.tipoDeLivroService);
         getData();
         LOG.info("Iniciando serviço do tipo do livro para deletar o tipo de livro no ndynamoDB");
         deletarTipoDeLivro();

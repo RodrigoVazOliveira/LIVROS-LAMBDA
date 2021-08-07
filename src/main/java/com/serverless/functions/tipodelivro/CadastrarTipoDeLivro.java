@@ -11,7 +11,6 @@ import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.serverless.ApiGatewayResponse;
 import com.serverless.Response;
-import com.serverless.functions.tipodelivro.helper.TipoDeLivroServiceInstance;
 import com.serverless.helper.GetInput;
 import com.serverless.models.TipoDeLivro;
 import com.serverless.services.TipoDeLivroService;
@@ -23,12 +22,15 @@ public class CadastrarTipoDeLivro implements RequestHandler<Map<String, Object>,
     private TipoDeLivro tipoDeLivro;
     private Map<String, Object> input;
 
+    public CadastrarTipoDeLivro() {
+    	tipoDeLivro = new TipoDeLivro();
+    }
+    
     @Override
     public ApiGatewayResponse handleRequest(Map<String, Object> input, Context context) {
         LOG.info("Inicio de gravação dos dados do tipo de livro");
         LOG.info("Resgatando dados enviados");
         this.input = input;
-        this.tipoDeLivroService = TipoDeLivroServiceInstance.getInstance(this.tipoDeLivroService);
         getData();
         LOG.info("Gravando os dados no dynamoDB");
         this.tipoDeLivroService.cadastrarNovoTipoDeLivro(this.tipoDeLivro);

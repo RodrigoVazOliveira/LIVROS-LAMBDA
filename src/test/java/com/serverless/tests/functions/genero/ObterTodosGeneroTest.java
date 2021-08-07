@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -36,6 +37,7 @@ public class ObterTodosGeneroTest {
     @Mock
     private Context context;
 
+    @InjectMocks
     private ObterGenero obterGenero;
     
     @Mock
@@ -51,8 +53,6 @@ public class ObterTodosGeneroTest {
     public void setup() {
     	this.input = new HashMap<String, Object>();
     	this.mensagemRetorno = null;
-    	this.obterGenero = new ObterGenero();
-    	this.obterGenero.setGeneroService(this.generoService);
     }
 
     @Test

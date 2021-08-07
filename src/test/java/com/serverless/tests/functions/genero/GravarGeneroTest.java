@@ -40,8 +40,6 @@ public class GravarGeneroTest {
     @BeforeEach
     public void setup() {
     	this.input = new HashMap<String, Object>();
-    	this.gravarGenero = new GravarGenero();
-    	this.gravarGenero.setGeneroService(this.generoService);
     }
 
     @Test

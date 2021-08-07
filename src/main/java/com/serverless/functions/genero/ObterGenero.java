@@ -11,7 +11,6 @@ import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.serverless.ApiGatewayResponse;
 import com.serverless.Response;
-import com.serverless.functions.genero.helper.GeneroServiceInstance;
 import com.serverless.helper.ObjectMapperProxy;
 import com.serverless.models.Genero;
 import com.serverless.services.GeneroService;
@@ -23,11 +22,14 @@ public class ObterGenero implements RequestHandler<Map<String, Object>, ApiGatew
     private Map<String, Object> input;
     private String resultado;
 
+    public ObterGenero() {
+    	this.generoService = new GeneroService();
+    }
+    
     @Override
     public ApiGatewayResponse handleRequest(Map<String, Object> input, Context context) {
         LOG.info("Iniciar processo para gerar lista de generos!");
         this.input = input;
-        this.generoService = GeneroServiceInstance.getInstance(this.generoService);
         String mensagem = converterListaDeGeneroParaJson(this.generoService.obterTodosGeneros());
         LOG.info("Gerado lista de generos!");
 

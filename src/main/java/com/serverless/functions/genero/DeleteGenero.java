@@ -11,7 +11,6 @@ import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.serverless.ApiGatewayResponse;
 import com.serverless.Response;
-import com.serverless.functions.genero.helper.GeneroServiceInstance;
 import com.serverless.helper.GetInput;
 import com.serverless.services.GeneroService;
 
@@ -20,14 +19,17 @@ public class DeleteGenero implements RequestHandler<Map<String, Object>, ApiGate
     private GeneroService generoService;
     private static final Logger LOG = LogManager.getLogger(DeleteGenero.class);
     private String id;
-    private Map<String, Object> input;
+    private Map<String, Object> input;  
+    
+    public DeleteGenero() {
+    	this.generoService = new GeneroService();
+	}
 
-    @Override
+	@Override
     public ApiGatewayResponse handleRequest(Map<String, Object> input, Context context) {
         LOG.info("Inciar o processo para deletar o genero!");
         this.input = input;
         getData();
-        this.generoService = GeneroServiceInstance.getInstance(this.generoService);
         return deletarGenero();
     }
 

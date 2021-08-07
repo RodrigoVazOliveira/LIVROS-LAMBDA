@@ -13,6 +13,7 @@ import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -35,6 +36,7 @@ public class ObterTodosTipoDeLivroTest {
     @Mock
     private Context context;
 
+    @InjectMocks
     private ObterTodosTipoDeLivro obterTodosTipoDeLivro;
 
     private Iterable<TipoDeLivro> tipoDeLivros;
@@ -55,9 +57,6 @@ public class ObterTodosTipoDeLivroTest {
         this.tipoDeLivros = tipoDeLivrosList;
         
         this.mensagemRetorno = null;
-        
-        this.obterTodosTipoDeLivro = new ObterTodosTipoDeLivro();
-        this.obterTodosTipoDeLivro.setTipoDeLivroService(this.tipoDeLivroService);
     }
 
     @Test

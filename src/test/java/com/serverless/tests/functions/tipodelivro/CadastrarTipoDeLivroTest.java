@@ -7,9 +7,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -32,13 +32,8 @@ public class CadastrarTipoDeLivroTest {
     @Mock
     private Context context;
 
+    @InjectMocks
     private CadastrarTipoDeLivro cadastrarTipoDeLivro;
-    
-    @BeforeEach
-    public void iniciar() {
-    	this.cadastrarTipoDeLivro = new CadastrarTipoDeLivro();
-    	this.cadastrarTipoDeLivro.setTipoDeLivroService(this.tipoDeLivroService);
-    }
 
     @Test
     public void testarCadastroDeTipoDeLivroComSucesso() {

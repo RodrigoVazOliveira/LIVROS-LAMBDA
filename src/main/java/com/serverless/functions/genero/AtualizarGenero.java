@@ -11,7 +11,6 @@ import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.serverless.ApiGatewayResponse;
 import com.serverless.Response;
-import com.serverless.functions.genero.helper.GeneroServiceInstance;
 import com.serverless.helper.GetInput;
 import com.serverless.models.Genero;
 import com.serverless.services.GeneroService;
@@ -22,13 +21,16 @@ public class AtualizarGenero implements RequestHandler<Map<String, Object>, ApiG
 	private final Genero genero = new Genero();
 	private static final Logger LOG = LogManager.getLogger(AtualizarGenero.class);
 	private Map<String, Object> input;
+	
+	public AtualizarGenero() {
+		this.generoService = new GeneroService();
+	}
 
 	@Override
 	public ApiGatewayResponse handleRequest(Map<String, Object> input, Context context) {
 		LOG.info("Capturando as informações enviadas.");
 		this.input = input;
 		getData();
-        this.generoService = GeneroServiceInstance.getInstance(this.generoService);
 		LOG.info("Iniciando o processo de atualização no DynamoDB");
 		
 		return verificarResposta();

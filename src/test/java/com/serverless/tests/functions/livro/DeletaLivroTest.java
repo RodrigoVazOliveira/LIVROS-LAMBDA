@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -35,15 +36,13 @@ public class DeletaLivroTest {
 	private ApiGatewayResponse responseExpect;
 	private ApiGatewayResponse responseActual;
 	
+	@InjectMocks
 	private DeleteLivro deleteLivro;
 	
 	@BeforeEach
 	public void setup() {
 		this.input = new HashMap<String, Object>();
 		this.input.put("body", "{\"id\": \"34233242342\"}");
-		
-        this.deleteLivro = new DeleteLivro();
-        this.deleteLivro.setLivroService(this.livroService);
 	}
 	
 	@Test

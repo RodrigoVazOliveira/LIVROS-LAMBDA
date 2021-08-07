@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -33,13 +34,12 @@ public class AtualizarGeneroTest {
     
     private Map<String, Object> input;
 
+    @InjectMocks
     private AtualizarGenero atualizarGenero;
     
     @BeforeEach
     public void setup() {
     	this.input = new HashMap<String, Object>();
-    	this.atualizarGenero = new AtualizarGenero();
-    	this.atualizarGenero.setGeneroService(this.generoService);
     }
     
 
